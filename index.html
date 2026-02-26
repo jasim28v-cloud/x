@@ -3,102 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>STUDIO HOMEWORK | JEWEL EDITION</title>
+    <title>STUDIO HOMEWORK | ROYAL PINK</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Rajdhani:wght@500;700&display=swap');
+        
+        :root { --jewel-pink: #ff007f; --glow: 0 0 20px rgba(255, 0, 127, 0.5); }
+        
+        body, html { margin: 0; padding: 0; background: #050002; color: #fff; overflow: hidden; font-family: 'Rajdhani', sans-serif; height: 100%; }
 
-        :root { 
-            --jewel-pink: #ff007f; 
-            --deep-rose: #3a0019;
-            --glass: rgba(10, 0, 5, 0.85);
-        }
-
-        body, html { 
-            margin: 0; padding: 0; background: #050002; color: #fff; 
-            overflow: hidden; font-family: 'Rajdhani', sans-serif;
-            height: 100%; width: 100%;
-        }
-
-        /* حاوية التمرير الفخم */
-        .scroller { 
-            height: 100vh; width: 100vw;
-            overflow-y: scroll; scroll-snap-type: y mandatory; 
-            scrollbar-width: none; scroll-behavior: smooth;
-        }
+        .scroller { height: 100vh; width: 100vw; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; }
         .scroller::-webkit-scrollbar { display: none; }
 
-        .video-block { 
-            height: 100vh; width: 100vw; scroll-snap-align: start; 
-            position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
+        .video-card { height: 100vh; width: 100vw; scroll-snap-align: start; position: relative; display: flex; align-items: center; justify-content: center; background: #000; }
+        
+        /* وضوح جوهري كامل للفيديو */
+        video { width: 100%; height: 100%; object-fit: contain; filter: contrast(1.1) brightness(0.9); }
+
+        .hud-frame { position: absolute; inset: 25px; border: 1px solid rgba(255, 0, 127, 0.1); pointer-events: none; z-index: 10; border-radius: 20px; }
+        .corner { position: absolute; width: 35px; height: 35px; border: 3px solid var(--jewel-pink); filter: drop-shadow(var(--glow)); }
+        .tl { top: -2px; left: -2px; border-right: 0; border-bottom: 0; border-radius: 15px 0 0 0; }
+        .br { bottom: -2px; right: -2px; border-left: 0; border-top: 0; border-radius: 0 0 15px 0; }
+
+        .title-pink { 
+            font-family: 'Orbitron'; font-weight: 900; font-size: clamp(3rem, 12vw, 6rem); line-height: 0.8; 
+            background: linear-gradient(to right, #fff, var(--jewel-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(var(--glow)); text-transform: uppercase;
         }
 
-        /* عرض الفيديو الجوهري بالكامل */
-        video { 
-            width: 100%; height: 100%; object-fit: contain; 
-            filter: brightness(0.9) contrast(1.1); transition: 1.5s ease;
-        }
-
-        /* واجهة HUD الوردية المتطورة */
-        .hud-frame {
-            position: absolute; inset: 25px; border: 1px solid rgba(255, 0, 127, 0.1);
-            pointer-events: none; z-index: 10; border-radius: 20px;
-        }
-        .jewel-corner { position: absolute; width: 35px; height: 35px; border: 3px solid var(--jewel-pink); filter: drop-shadow(0 0 12px var(--jewel-pink)); }
-        .top-left { top: -2px; left: -2px; border-right: 0; border-bottom: 0; border-radius: 15px 0 0 0; }
-        .bottom-right { bottom: -2px; right: -2px; border-left: 0; border-top: 0; border-radius: 0 0 15px 0; }
-
-        /* النصوص والمعلومات الجوهرية */
-        .details-overlay {
-            position: absolute; bottom: 60px; right: 45px; z-index: 100;
-            max-width: 80%; pointer-events: none; text-align: left;
-        }
-        .node-tag {
-            background: rgba(255, 0, 127, 0.15); border-left: 4px solid var(--jewel-pink);
-            color: var(--jewel-pink); padding: 6px 18px; font-size: 11px;
-            letter-spacing: 5px; font-family: 'Orbitron'; margin-bottom: 15px; display: inline-block;
-        }
-        .title-main {
-            font-family: 'Orbitron'; font-weight: 900; font-size: clamp(3rem, 12vw, 6.5rem);
-            line-height: 0.8; text-transform: uppercase; letter-spacing: -3px;
-            background: linear-gradient(to right, #fff, var(--jewel-pink));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 20px rgba(255, 0, 127, 0.4));
-        }
-
-        /* شاشة تحميل "الجوهرة" */
-        #jewel-loader {
-            position: fixed; inset: 0; background: #000; z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .load-ring { width: 50px; height: 50px; border: 2px solid rgba(255, 0, 127, 0.1); border-top: 2px solid var(--jewel-pink); border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        #loader { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .load-bar { width: 200px; height: 2px; background: rgba(255,0,127,0.1); position: relative; margin-top: 20px; overflow: hidden; }
+        .load-progress { position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--jewel-pink); animation: loading 2s infinite; }
+        @keyframes loading { 100% { left: 100%; } }
     </style>
 </head>
 <body>
 
-    <div id="jewel-loader">
-        <div class="load-ring"></div>
-        <div class="mt-6 text-pink-500 font-black tracking-[12px] animate-pulse text-[10px]" style="font-family: 'Orbitron';">INITIALIZING_JEWEL_OS</div>
+    <div id="loader">
+        <div class="text-pink-500 font-black tracking-[12px] animate-pulse text-[10px]" style="font-family: 'Orbitron';">SYNCING_JEWEL_OS</div>
+        <div class="load-bar"><div class="load-progress"></div></div>
     </div>
-
-    <header class="fixed top-0 w-full z-[1000] p-10 flex justify-between items-start pointer-events-none">
-        <div class="flex items-center gap-6">
-            <div class="w-1 h-16 bg-pink-600 shadow-[0_0_20px_#ff007f]"></div>
-            <div>
-                <h1 class="font-black text-3xl tracking-tighter" style="font-family: 'Orbitron';">STUDIO<span class="text-pink-500">.HW</span></h1>
-                <div class="text-[9px] text-white/40 tracking-[6px] mt-1 uppercase">Pink Jewel Edition // 2027</div>
-            </div>
-        </div>
-    </header>
 
     <main class="scroller" id="jewel-engine"></main>
 
     <script>
-        const cloudID = "dssk5tabb";
-        // الأسماء الجديدة التي أرسلتها (مرتبة بدقة)
-        const videoList = [
+        const cloudAccount = "dssk5tabb";
+        
+        // الأسماء الصحيحة التي أرسلتها (كل اسم الآن فريد كما هو في حسابك)
+        const videoIDs = [
             "22_ypq1wb", "23_ypq1wb", "24_ypq1wb", "25_ypq1wb", 
             "26_ypq1wb", "27_ypq1wb", "28_ypq1wb", "29_ypq1wb", 
             "30_ypq1wb", "31_ypq1wb", "32_ypq1wb", "33_ypq1wb", 
@@ -107,16 +60,15 @@
 
         const engine = document.getElementById('jewel-engine');
 
-        videoList.forEach((id, index) => {
+        videoIDs.forEach((id, index) => {
             const section = document.createElement('section');
-            section.className = 'video-block';
+            section.className = 'video-card';
             section.innerHTML = `
-                <div class="hud-frame"><div class="jewel-corner top-left"></div><div class="jewel-corner bottom-right"></div></div>
-                <video loop playsinline muted src="https://res.cloudinary.com/${cloudID}/video/upload/q_auto:best,f_auto/${id}.mp4"></video>
-                <div class="details-overlay">
-                    <div class="node-tag">JEWEL_NODE_0${index + 1}</div>
-                    <h2 class="title-main">HOMEWORK<br>STUDIO</h2>
-                    <p class="text-white/20 text-[9px] mt-8 tracking-[8px] uppercase font-bold italic">Node_Ref: ${id}</p>
+                <div class="hud-frame"><div class="corner tl"></div><div class="corner br"></div></div>
+                <video loop playsinline muted src="https://res.cloudinary.com/${cloudAccount}/video/upload/q_auto,f_auto/${id}.mp4"></video>
+                <div class="absolute bottom-16 right-10 z-[100] pointer-events-none">
+                    <div class="text-pink-400 text-[9px] tracking-[6px] mb-3 font-bold">NODE_REF: ${id}</div>
+                    <h2 class="title-pink">STUDIO<br>HOMEWORK</h2>
                 </div>
             `;
             engine.appendChild(section);
@@ -124,21 +76,21 @@
 
         window.addEventListener('load', () => {
             setTimeout(() => {
-                document.getElementById('jewel-loader').style.opacity = '0';
-                setTimeout(() => document.getElementById('jewel-loader').style.display = 'none', 800);
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => document.getElementById('loader').style.display = 'none', 800);
             }, 1500);
-            startObs();
+            initObserver();
         });
 
-        function startObs() {
+        function initObserver() {
             const obs = new IntersectionObserver((entries) => {
                 entries.forEach(e => {
                     const vid = e.target.querySelector('video');
-                    if (e.isIntersecting) vid.play();
+                    if (e.isIntersecting) vid.play().catch(() => {});
                     else { vid.pause(); vid.currentTime = 0; }
                 });
-            }, { threshold: 0.7 });
-            document.querySelectorAll('.video-block').forEach(s => obs.observe(s));
+            }, { threshold: 0.6 });
+            document.querySelectorAll('.video-card').forEach(s => obs.observe(s));
         }
 
         window.onclick = () => { document.querySelectorAll('video').forEach(v => v.muted = false); };
