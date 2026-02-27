@@ -3,123 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ULTRA VIDEO HUB | DSSK5TABB</title>
+    <title>CRYSTAL VAULT | ULTRA LUXURY</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap');
-        
-        body { 
-            background-color: #030712; 
-            color: #f8fafc; 
-            font-family: 'Inter', sans-serif;
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Plus+Jakarta+Sans:wght@200;800&display=swap');
+
+        :root {
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --accent: #3b82f6;
+        }
+
+        body {
+            background: #02040a;
+            color: #fff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
+            min-height: 200vh;
         }
 
-        .hero-title {
-            font-family: 'Orbitron', sans-serif;
-            background: linear-gradient(to right, #60a5fa, #c084fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        /* خلفية متحركة خارقة */
+        .bg-glow {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% -20%, #1e293b, #02040a);
+            z-index: -1;
         }
 
-        .video-card {
-            background: rgba(30, 41, 59, 0.4);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        .blob {
+            position: fixed;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+            filter: blur(80px);
+            border-radius: 50%;
+            z-index: -1;
+            animation: move 20s infinite alternate;
         }
 
-        .video-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: #60a5fa;
-            box-shadow: 0 20px 50px rgba(59, 130, 246, 0.2);
+        @keyframes move {
+            from { transform: translate(-20%, -20%); }
+            to { transform: translate(20%, 20%); }
         }
 
-        .player-wrapper video {
+        /* تصميم الكارت الزجاجي */
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(25px) saturate(180%);
+            border: 1px solid var(--border);
+            border-radius: 32px;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(59, 130, 246, 0.4);
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 20px rgba(59, 130, 246, 0.1);
+        }
+
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+
+        .search-container {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+        }
+
+        video {
             width: 100%;
             aspect-ratio: 16/9;
             object-fit: cover;
-            border-radius: 12px 12px 0 0;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #030712; }
-        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+        .neon-text {
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <nav class="flex justify-between items-center px-10 py-6 border-b border-white/5 sticky top-0 bg-[#030712]/80 backdrop-blur-xl z-50">
-        <div class="flex items-center gap-3">
-            <div class="h-10 w-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
-                <i class="fas fa-bolt text-white"></i>
+    <div class="bg-glow"></div>
+    <div class="blob"></div>
+
+    <nav class="container mx-auto px-6 py-10 flex flex-col items-center">
+        <div class="flex items-center gap-4 mb-12">
+            <div class="w-16 h-16 glass-card flex items-center justify-center text-blue-500 shadow-2xl">
+                <i class="fa-solid fa-gem text-2xl animate-pulse"></i>
             </div>
-            <span class="hero-title text-xl font-bold tracking-widest uppercase">Elite Stream</span>
+            <div class="text-left">
+                <h1 class="orbitron text-3xl font-black tracking-[0.3em] uppercase neon-text">Crystal<span class="text-blue-500">Node</span></h1>
+                <p class="text-[10px] text-gray-500 tracking-[0.5em] uppercase font-bold mt-1">Quantum Cloud Interface</p>
+            </div>
         </div>
-        <div class="flex gap-8 text-xs font-semibold tracking-tighter uppercase text-gray-400">
-            <a href="#" class="hover:text-blue-400 transition">Library</a>
-            <a href="#" class="hover:text-blue-400 transition">Cloudinary</a>
-            <a href="#" class="hover:text-blue-400 transition">API: Connected</a>
+
+        <div class="search-container w-full max-w-2xl flex items-center px-8 py-5 group">
+            <i class="fa-solid fa-fingerprint text-blue-500/50 mr-6 text-xl"></i>
+            <input type="text" id="vaultSearch" placeholder="IDENTIFY INDEX (001-099)..." 
+                   class="bg-transparent w-full outline-none text-sm orbitron tracking-widest font-bold placeholder:text-gray-700">
+            <span class="text-[9px] text-gray-600 orbitron">SECURE_LINK</span>
         </div>
     </nav>
 
-    <section class="py-20 text-center">
-        <h2 class="hero-title text-6xl md:text-8xl font-black mb-6">UNLIMITED <br> EXPERIENCE</h2>
-        <p class="text-gray-500 max-w-2xl mx-auto text-lg font-light leading-relaxed">
-            Streaming professional assets directly from <span class="text-blue-400 font-bold">dssk5tabb</span> secure cloud nodes.
-        </p>
-    </section>
-
-    <main class="container mx-auto px-6 pb-40">
-        <div id="mainGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+    <main class="container mx-auto px-8 py-20">
+        <div id="crystalGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             </div>
     </main>
 
-    <footer class="py-20 border-t border-white/5 text-center text-gray-600">
-        <p class="text-xs uppercase tracking-[0.5em]">&copy; 2026 DIGITAL ARCHIVE SYSTEM</p>
+    <footer class="py-20 text-center opacity-30">
+        <p class="orbitron text-[9px] tracking-[1em] uppercase">End of Encrypted Archive</p>
     </footer>
 
     <script>
         const CLOUD_NAME = "dssk5tabb";
-        // Your specific list from 22 to 37
-        const videoList = [
-            "22_ypq1wb", "23_ypq1wb", "24_ypq1wb", "25_ypq1wb", "26_ypq1wb",
-            "27_ypq1wb", "28_ypq1wb", "29_ypq1wb", "30_ypq1wb", "31_ypq1wb",
-            "32_ypq1wb", "33_ypq1wb", "34_ypq1wb", "35_ypq1wb", "36_ypq1wb", "37_ypq1wb"
-        ];
 
-        const mainGrid = document.getElementById('mainGrid');
+        // Generate names automatically 001_ypq1wb to 099_ypq1wb
+        const generateData = () => {
+            let list = [];
+            for (let i = 1; i <= 99; i++) {
+                let num = i.toString().padStart(3, '0');
+                list.push({
+                    id: `${num}_ypq1wb`,
+                    index: num
+                });
+            }
+            return list;
+        };
 
-        videoList.forEach((id, index) => {
-            const videoUrl = `https://res.cloudinary.com/${CLOUD_NAME}/video/upload/${id}.mp4`;
-            const posterUrl = `https://res.cloudinary.com/${CLOUD_NAME}/video/upload/${id}.jpg`;
-            
-            const card = `
-                <div class="video-card rounded-3xl overflow-hidden group">
-                    <div class="player-wrapper relative">
-                        <video controls poster="${posterUrl}" preload="none">
-                            <source src="${videoUrl}" type="video/mp4">
+        const vaultItems = generateData();
+        const grid = document.getElementById('crystalGrid');
+        const searchInput = document.getElementById('vaultSearch');
+
+        function render(data) {
+            grid.innerHTML = data.map(item => `
+                <div class="glass-card p-4 group">
+                    <div class="relative mb-6 overflow-hidden rounded-3xl">
+                        <video poster="https://res.cloudinary.com/${CLOUD_NAME}/video/upload/${item.id}.jpg" preload="none" controls>
+                            <source src="https://res.cloudinary.com/${CLOUD_NAME}/video/upload/${item.id}.mp4" type="video/mp4">
                         </video>
-                        <div class="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-blue-400">
-                            PART ${index + 22}
+                        <div class="absolute top-4 left-4 glass-card px-4 py-2 border-none">
+                            <span class="orbitron text-[10px] font-black text-blue-400">#${item.index}</span>
                         </div>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-sm font-bold text-gray-200 uppercase tracking-widest mb-1">${id}</h3>
-                        <p class="text-[10px] text-gray-500 font-mono">ENCODED: H.264 / 4K READY</p>
-                        <div class="mt-6 flex items-center justify-between">
-                            <button onclick="window.open('${videoUrl}')" class="text-xs font-bold text-blue-400 hover:text-white transition uppercase">Direct Link</button>
-                            <div class="flex gap-2">
-                                <div class="h-1.5 w-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]"></div>
-                                <div class="h-1.5 w-1.5 rounded-full bg-gray-700"></div>
+                    <div class="px-4 pb-4">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="orbitron text-[11px] font-bold text-gray-400 tracking-tighter">${item.id}</h3>
+                            <div class="flex gap-1">
+                                <span class="w-1 h-1 rounded-full bg-blue-600 animate-ping"></span>
+                                <span class="w-1 h-1 rounded-full bg-blue-600/30"></span>
                             </div>
                         </div>
+                        <button onclick="window.open('https://res.cloudinary.com/${CLOUD_NAME}/video/upload/${item.id}.mp4')" 
+                                class="w-full py-3 glass-card text-[9px] orbitron font-bold uppercase tracking-widest hover:bg-blue-600 hover:text-white border-white/5 transition-all">
+                            Access Source Link
+                        </button>
                     </div>
                 </div>
-            `;
-            mainGrid.innerHTML += card;
+            `).join('');
+        }
+
+        // Real-time Filtering
+        searchInput.addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase();
+            const filtered = vaultItems.filter(item => item.id.includes(val));
+            render(filtered);
         });
+
+        // Initialize
+        render(vaultItems);
     </script>
 </body>
 </html>
