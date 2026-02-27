@@ -1,158 +1,176 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Studio Homework | The Masterpiece</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>STUDIO HOMEWORK | EMPIRE 2027</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            --accent: #ffffff;
-            --glass: rgba(255, 255, 255, 0.05);
-            --blur: blur(25px);
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
+
+        :root { --neon: #00f3ff; --glass: rgba(0, 0, 0, 0.85); }
+
+        body, html { 
+            margin: 0; padding: 0; background: #000; color: #fff; 
+            overflow: hidden; font-family: 'Rajdhani', sans-serif;
+            height: 100%; width: 100%;
         }
 
-        body, html {
-            margin: 0; padding: 0; height: 100%;
-            overflow: hidden; background: #000;
-            font-family: 'Inter', -apple-system, sans-serif;
-            color: white;
+        .main-scroller { 
+            height: 100vh; width: 100vw;
+            overflow-y: scroll; scroll-snap-type: y mandatory; 
+            scrollbar-width: none; scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+        .main-scroller::-webkit-scrollbar { display: none; }
+
+        .video-section { 
+            height: 100vh; width: 100vw; scroll-snap-align: start; 
+            position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
         }
 
-        /* حاوية التغذية الضخمة */
-        .master-feed {
-            height: 100vh; overflow-y: scroll;
-            snap-type: y mandatory; scroll-behavior: smooth;
+        .video-bg { position: absolute; inset: 0; z-index: 1; }
+        video { 
+            width: 100%; height: 100%; object-fit: cover; 
+            filter: brightness(0.4) contrast(1.1); 
+            transition: transform 2s cubic-bezier(0.2, 0, 0.2, 1); 
+        }
+        .video-section.active video { transform: scale(1.1); filter: brightness(0.6); }
+
+        .hud-overlay {
+            position: absolute; inset: 20px; border: 1px solid rgba(0, 243, 255, 0.05);
+            pointer-events: none; z-index: 10; border-radius: 20px;
+        }
+        .corner { position: absolute; width: 30px; height: 30px; border: 2px solid var(--neon); filter: drop-shadow(0 0 10px var(--neon)); opacity: 0.5; }
+        .t-l { top: -2px; left: -2px; border-right: 0; border-bottom: 0; border-radius: 15px 0 0 0; }
+        .b-r { bottom: -2px; right: -2px; border-left: 0; border-top: 0; border-radius: 0 0 15px 0; }
+
+        .info-panel {
+            position: absolute; bottom: 10%; left: 5%; z-index: 100;
+            max-width: 90%; pointer-events: none;
+            text-align: left;
+        }
+        .node-tag {
+            background: rgba(0, 243, 255, 0.1); border: 1px solid var(--neon);
+            color: var(--neon); padding: 4px 12px; font-size: 9px;
+            letter-spacing: 3px; font-family: 'Orbitron'; margin-bottom: 15px; display: inline-block;
+        }
+        .main-title {
+            font-family: 'Orbitron'; font-weight: 900; font-size: clamp(2.5rem, 10vw, 5rem);
+            line-height: 0.9; text-transform: uppercase; letter-spacing: -2px;
+            background: linear-gradient(to bottom, #fff 30%, var(--neon));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        .video-section {
-            height: 100vh; width: 100%; snap-align: start;
-            position: relative; display: flex; align-items: center; justify-content: center;
+        #loader {
+            position: fixed; inset: 0; background: #000; z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: 1s ease-in-out;
         }
+        .progress-bar { width: 200px; height: 1px; background: rgba(255,255,255,0.1); position: relative; margin-top: 20px; }
+        .progress-fill { position: absolute; top: 0; left: 0; height: 100%; background: var(--neon); animation: sync 2s infinite; }
+        @keyframes sync { 0% { width: 0%; left: 0; } 50% { width: 100%; left: 0; } 100% { width: 0%; left: 100%; } }
 
-        /* عرض الفيديو السينمائي */
-        .video-container {
-            width: 100%; height: 100%;
-            background: #000; position: relative;
+        #mute-hint {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            z-index: 2000; font-size: 10px; letter-spacing: 2px;
+            color: var(--neon); animation: pulse 2s infinite;
+            background: rgba(0,0,0,0.5); padding: 5px 15px; border-radius: 20px;
         }
-
-        video {
-            width: 100%; height: 100%; object-fit: cover;
-            opacity: 0; transition: opacity 1.2s ease-in-out;
-        }
-
-        video.active { opacity: 1; }
-
-        /* الشعار والبيانات الفخمة (تصميم التايبوغراف الحديث) */
-        .overlay-ui {
-            position: absolute; bottom: 60px; right: 60px;
-            z-index: 10; text-align: right; pointer-events: none;
-        }
-
-        .category-tag {
-            font-size: 0.65rem; font-weight: 900; letter-spacing: 5px;
-            color: var(--accent); text-transform: uppercase; margin-bottom: 10px;
-            opacity: 0.6;
-        }
-
-        .project-title {
-            font-size: clamp(2rem, 8vw, 4rem); font-weight: 100;
-            line-height: 1; letter-spacing: -2px;
-        }
-
-        /* لودر البداية الفخم */
-        #preloader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 1000; display: flex;
-            align-items: center; justify-content: center; transition: 1.5s;
-        }
-
-        .loader-text { font-weight: 100; letter-spacing: 10px; font-size: 0.8rem; animation: pulse 2s infinite; }
-
-        @keyframes pulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
-
-        .master-feed::-webkit-scrollbar { display: none; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
     </style>
 </head>
 <body>
 
-    <div id="preloader">
-        <div class="loader-text">STUDIO HOMEWORK / DISCOVERING ARCHIVE...</div>
+    <div id="loader">
+        <div class="text-cyan-400 font-black tracking-[12px] animate-pulse text-[10px]" style="font-family: 'Orbitron';">CORE_LOAD_2027</div>
+        <div class="progress-bar"><div class="progress-fill"></div></div>
     </div>
 
-    <div class="master-feed" id="mainFeed"></div>
+    <div id="mute-hint"><i class="fas fa-volume-mute"></i> CLICK TO ENABLE AUDIO</div>
+
+    <header class="fixed top-0 w-full z-[1000] p-6 md:p-10 flex justify-between items-start pointer-events-none">
+        <div class="flex items-center gap-4">
+            <div class="w-1 h-12 bg-cyan-400 shadow-[0_0_15px_#00f3ff]"></div>
+            <div>
+                <h1 class="font-black text-2xl tracking-tighter" style="font-family: 'Orbitron';">STUDIO<span class="text-cyan-400">.HW</span></h1>
+                <div id="live-clock" class="text-[8px] text-white/40 tracking-[4px] mt-1">00:00:00 // SYSTEM_READY</div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-scroller" id="content-engine"></main>
 
     <script>
-        const CLOUD_NAME = "dssk5tabb";
-        const SUFFIX = "_ypq1wb";
-        const feed = document.getElementById('mainFeed');
+        const cloudID = "dssk5tabb";
+        
+        const videoArchive = [
+            "22_ypq1wb", "23_ypq1wb", "24_ypq1wb", "25_ypq1wb",
+            "26_ypq1wb", "27_ypq1wb", "28_ypq1wb", "29_ypq1wb",
+            "30_ypq1wb", "31_ypq1wb", "32_ypq1wb", "33_ypq1wb",
+            "34_ypq1wb", "35_ypq1wb", "36_ypq1wb", "37_ypq1wb"
+        ];
 
-        // أداة الفحص المتوازي لسرعة البرق
-        async function buildInfiniteLibrary() {
-            const maxVideos = 1000;
-            const probes = [];
+        const engine = document.getElementById('content-engine');
 
-            // إرسال طلبات فحص لجميع المسارات المحتملة في وقت واحد
-            for (let i = 1; i <= maxVideos; i++) {
-                probes.push(checkVideo(i));
-            }
-
-            const activeVideos = await Promise.all(probes);
-            
-            activeVideos.filter(v => v !== null).forEach(video => {
-                createSection(video.url, video.index);
-            });
-
-            // إخفاء اللودر بعد اكتمال الفحص
-            document.getElementById('preloader').style.opacity = '0';
-            setTimeout(() => document.getElementById('preloader').remove(), 1500);
-        }
-
-        async function checkVideo(index) {
-            const id = `${index}${SUFFIX}`;
-            const url = `https://res.cloudinary.com/${CLOUD_NAME}/video/upload/f_auto,q_auto/${id}.mp4`;
-            
-            try {
-                const res = await fetch(url, { method: 'HEAD' });
-                if (res.ok) return { url, index };
-            } catch (e) {}
-            return null;
-        }
-
-        function createSection(url, index) {
-            const section = document.createElement('div');
+        videoArchive.forEach((id, index) => {
+            const section = document.createElement('section');
             section.className = 'video-section';
             section.innerHTML = `
-                <div class="video-container">
-                    <video loop playsinline muted oncanplay="this.classList.add('active')">
-                        <source src="${url}" type="video/mp4">
+                <div class="hud-overlay"><div class="corner t-l"></div><div class="corner b-r"></div></div>
+                <div class="video-bg">
+                    <video loop playsinline muted preload="auto">
+                        <source src="https://res.cloudinary.com/${cloudID}/video/upload/q_auto:eco/${id}.mp4" type="video/mp4">
                     </video>
-                    <div class="overlay-ui">
-                        <div class="category-tag">DIGITAL ARCHIVE // NODE_${index}</div>
-                        <div class="project-title">Composition ${index < 10 ? '0' + index : index}</div>
-                    </div>
+                </div>
+                <div class="info-panel">
+                    <div class="node-tag">NODE_0${index + 22}</div>
+                    <h2 class="main-title">HOMEWORK<br>STUDIO</h2>
+                    <p class="text-white/30 text-[8px] mt-6 tracking-[5px] uppercase">ID: ${id}</p>
                 </div>
             `;
-            feed.appendChild(section);
-            observer.observe(section);
-        }
+            engine.appendChild(section);
+        });
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const video = entry.target.querySelector('video');
-                if (entry.isIntersecting) {
-                    video.play().catch(() => {});
-                } else {
-                    video.pause();
-                }
-            });
-        }, { threshold: 0.6 });
+        const startObserver = () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const video = entry.target.querySelector('video');
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        video.play().catch(() => {});
+                    } else {
+                        entry.target.classList.remove('active');
+                        video.pause();
+                    }
+                });
+            }, { threshold: 0.6 });
+            document.querySelectorAll('.video-section').forEach(s => observer.observe(s));
+        };
 
-        // تفعيل الصوت عند أول تفاعل
-        document.addEventListener('click', () => {
-            document.querySelectorAll('video').forEach(v => v.muted = false);
-        }, { once: true });
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => document.getElementById('loader').remove(), 1000);
+            }, 1500);
+            startObserver();
+        });
 
-        buildInfiniteLibrary();
+        let audioInited = false;
+        window.onclick = () => {
+            if(!audioInited) {
+                document.querySelectorAll('video').forEach(v => v.muted = false);
+                document.getElementById('mute-hint').style.display = 'none';
+                audioInited = true;
+            }
+        };
+
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('live-clock').innerText = 
+                now.toLocaleTimeString('en-US', { hour12: false }) + " // ENCRYPTED_ACCESS";
+        }, 1000);
     </script>
 </body>
 </html>
