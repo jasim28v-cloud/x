@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>STUDIO HOMEWORK | EMPIRE 2027</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -21,7 +21,6 @@
             height: 100vh; width: 100vw;
             overflow-y: scroll; scroll-snap-type: y mandatory; 
             scrollbar-width: none; scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
         }
         .main-scroller::-webkit-scrollbar { display: none; }
 
@@ -31,72 +30,60 @@
         }
 
         .video-bg { position: absolute; inset: 0; z-index: 1; }
-        video { 
-            width: 100%; height: 100%; object-fit: cover; 
-            filter: brightness(0.4) contrast(1.1); 
-            transition: transform 2s cubic-bezier(0.2, 0, 0.2, 1); 
-        }
-        .video-section.active video { transform: scale(1.1); filter: brightness(0.6); }
+        video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.5) contrast(1.2); transition: 1.5s ease; }
+        .video-section:hover video { transform: scale(1.05); filter: brightness(0.7); }
 
         .hud-overlay {
-            position: absolute; inset: 20px; border: 1px solid rgba(0, 243, 255, 0.05);
-            pointer-events: none; z-index: 10; border-radius: 20px;
+            position: absolute; inset: 30px; border: 1px solid rgba(0, 243, 255, 0.1);
+            pointer-events: none; z-index: 10; border-radius: 25px;
         }
-        .corner { position: absolute; width: 30px; height: 30px; border: 2px solid var(--neon); filter: drop-shadow(0 0 10px var(--neon)); opacity: 0.5; }
-        .t-l { top: -2px; left: -2px; border-right: 0; border-bottom: 0; border-radius: 15px 0 0 0; }
-        .b-r { bottom: -2px; right: -2px; border-left: 0; border-top: 0; border-radius: 0 0 15px 0; }
+        .corner { position: absolute; width: 40px; height: 40px; border: 3px solid var(--neon); filter: drop-shadow(0 0 15px var(--neon)); }
+        .t-l { top: -2px; left: -2px; border-right: 0; border-bottom: 0; border-radius: 20px 0 0 0; }
+        .b-r { bottom: -2px; right: -2px; border-left: 0; border-top: 0; border-radius: 0 0 20px 0; }
 
         .info-panel {
-            position: absolute; bottom: 10%; left: 5%; z-index: 100;
-            max-width: 90%; pointer-events: none;
-            text-align: left;
+            position: absolute; bottom: 80px; left: 50px; z-index: 100;
+            max-width: 85%; pointer-events: none;
         }
         .node-tag {
             background: rgba(0, 243, 255, 0.1); border: 1px solid var(--neon);
-            color: var(--neon); padding: 4px 12px; font-size: 9px;
-            letter-spacing: 3px; font-family: 'Orbitron'; margin-bottom: 15px; display: inline-block;
+            color: var(--neon); padding: 5px 15px; font-size: 10px;
+            letter-spacing: 5px; font-family: 'Orbitron'; margin-bottom: 25px; display: inline-block;
         }
         .main-title {
-            font-family: 'Orbitron'; font-weight: 900; font-size: clamp(2.5rem, 10vw, 5rem);
-            line-height: 0.9; text-transform: uppercase; letter-spacing: -2px;
-            background: linear-gradient(to bottom, #fff 30%, var(--neon));
+            font-family: 'Orbitron'; font-weight: 900; font-size: clamp(3rem, 12vw, 6.5rem);
+            line-height: 0.8; text-transform: uppercase; letter-spacing: -4px;
+            background: linear-gradient(to right, #fff, var(--neon));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
         #loader {
             position: fixed; inset: 0; background: #000; z-index: 9999;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: 1s ease-in-out;
         }
-        .progress-bar { width: 200px; height: 1px; background: rgba(255,255,255,0.1); position: relative; margin-top: 20px; }
-        .progress-fill { position: absolute; top: 0; left: 0; height: 100%; background: var(--neon); animation: sync 2s infinite; }
-        @keyframes sync { 0% { width: 0%; left: 0; } 50% { width: 100%; left: 0; } 100% { width: 0%; left: 100%; } }
+        .progress-bar { width: 200px; height: 2px; background: rgba(255,255,255,0.1); position: relative; margin-top: 20px; }
+        .progress-fill { position: absolute; top: 0; left: 0; height: 100%; background: var(--neon); animation: sync 2.5s infinite; }
 
-        #mute-hint {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-            z-index: 2000; font-size: 10px; letter-spacing: 2px;
-            color: var(--neon); animation: pulse 2s infinite;
-            background: rgba(0,0,0,0.5); padding: 5px 15px; border-radius: 20px;
-        }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        @keyframes sync { 0% { width: 0%; left: 0; } 50% { width: 100%; left: 0; } 100% { width: 0%; left: 100%; } }
     </style>
 </head>
 <body>
 
     <div id="loader">
-        <div class="text-cyan-400 font-black tracking-[12px] animate-pulse text-[10px]" style="font-family: 'Orbitron';">CORE_LOAD_2027</div>
+        <div class="text-cyan-400 font-black tracking-[12px] animate-pulse text-[10px]" style="font-family: 'Orbitron';">SYNCING_STUDIO_2027</div>
         <div class="progress-bar"><div class="progress-fill"></div></div>
     </div>
 
-    <div id="mute-hint"><i class="fas fa-volume-mute"></i> CLICK TO ENABLE AUDIO</div>
-
-    <header class="fixed top-0 w-full z-[1000] p-6 md:p-10 flex justify-between items-start pointer-events-none">
-        <div class="flex items-center gap-4">
-            <div class="w-1 h-12 bg-cyan-400 shadow-[0_0_15px_#00f3ff]"></div>
+    <header class="fixed top-0 w-full z-[1000] p-10 flex justify-between items-start pointer-events-none">
+        <div class="flex items-center gap-6">
+            <div class="w-1 h-16 bg-cyan-400 shadow-[0_0_20px_#00f3ff]"></div>
             <div>
-                <h1 class="font-black text-2xl tracking-tighter" style="font-family: 'Orbitron';">STUDIO<span class="text-cyan-400">.HW</span></h1>
-                <div id="live-clock" class="text-[8px] text-white/40 tracking-[4px] mt-1">00:00:00 // SYSTEM_READY</div>
+                <h1 class="font-black text-3xl tracking-tighter" style="font-family: 'Orbitron';">STUDIO<span class="text-cyan-400">.HW</span></h1>
+                <div id="live-clock" class="text-[9px] text-white/40 tracking-[6px] mt-1">00:00:00 // SECURE_ACCESS</div>
             </div>
+        </div>
+        <div class="text-right">
+            <div class="px-4 py-1 border border-cyan-500/20 rounded bg-black/60 text-[9px] text-cyan-400 uppercase tracking-[4px]">Archive Mode 2027</div>
         </div>
     </header>
 
@@ -105,6 +92,7 @@
     <script>
         const cloudID = "dssk5tabb";
         
+        // القائمة الجديدة حسب الترتيب المستخرج
         const videoArchive = [
             "22_ypq1wb", "23_ypq1wb", "24_ypq1wb", "25_ypq1wb",
             "26_ypq1wb", "27_ypq1wb", "28_ypq1wb", "29_ypq1wb",
@@ -120,57 +108,45 @@
             section.innerHTML = `
                 <div class="hud-overlay"><div class="corner t-l"></div><div class="corner b-r"></div></div>
                 <div class="video-bg">
-                    <video loop playsinline muted preload="auto">
-                        <source src="https://res.cloudinary.com/${cloudID}/video/upload/q_auto:eco/${id}.mp4" type="video/mp4">
-                    </video>
+                    <video loop playsinline muted src="https://res.cloudinary.com/${cloudID}/video/upload/q_auto:best,f_auto/${id}.mp4"></video>
                 </div>
                 <div class="info-panel">
-                    <div class="node-tag">NODE_0${index + 22}</div>
+                    <div class="node-tag">NODE_ARCHIVE_${index + 1}</div>
                     <h2 class="main-title">HOMEWORK<br>STUDIO</h2>
-                    <p class="text-white/30 text-[8px] mt-6 tracking-[5px] uppercase">ID: ${id}</p>
+                    <p class="text-white/20 text-[9px] mt-8 tracking-[8px] uppercase font-bold italic">Reference_ID: ${id}</p>
                 </div>
             `;
             engine.appendChild(section);
         });
 
-        const startObserver = () => {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    const video = entry.target.querySelector('video');
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        video.play().catch(() => {});
-                    } else {
-                        entry.target.classList.remove('active');
-                        video.pause();
-                    }
-                });
-            }, { threshold: 0.6 });
-            document.querySelectorAll('.video-section').forEach(s => observer.observe(s));
-        };
-
         window.addEventListener('load', () => {
             setTimeout(() => {
                 document.getElementById('loader').style.opacity = '0';
-                setTimeout(() => document.getElementById('loader').remove(), 1000);
-            }, 1500);
+                setTimeout(() => document.getElementById('loader').style.display = 'none', 1000);
+            }, 2000);
             startObserver();
         });
 
-        let audioInited = false;
-        window.onclick = () => {
-            if(!audioInited) {
-                document.querySelectorAll('video').forEach(v => v.muted = false);
-                document.getElementById('mute-hint').style.display = 'none';
-                audioInited = true;
-            }
-        };
+        function startObserver() {
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    const vid = e.target.querySelector('video');
+                    if (e.isIntersecting) vid.play();
+                    else { vid.pause(); vid.currentTime = 0; }
+                });
+            }, { threshold: 0.7 });
+            document.querySelectorAll('.video-section').forEach(s => obs.observe(s));
+        }
 
         setInterval(() => {
             const now = new Date();
             document.getElementById('live-clock').innerText = 
-                now.toLocaleTimeString('en-US', { hour12: false }) + " // ENCRYPTED_ACCESS";
+                now.getHours().toString().padStart(2, '0') + ":" + 
+                now.getMinutes().toString().padStart(2, '0') + ":" + 
+                now.getSeconds().toString().padStart(2, '0') + " // SYSTEM_ACTIVE";
         }, 1000);
+
+        window.onclick = () => { document.querySelectorAll('video').forEach(v => v.muted = false); };
     </script>
 </body>
 </html>
