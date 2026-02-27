@@ -3,139 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Studio Homework | الذكاء الاستكشافي</title>
+    <title>Studio Homework | The Masterpiece</title>
     <style>
         :root {
+            --accent: #ffffff;
             --glass: rgba(255, 255, 255, 0.05);
-            --border: rgba(255, 255, 255, 0.1);
-            --accent: #00f2ea;
+            --blur: blur(25px);
         }
 
         body, html {
             margin: 0; padding: 0; height: 100%;
             overflow: hidden; background: #000;
-            font-family: 'Inter', sans-serif; color: white;
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: white;
         }
 
-        /* حاوية التمرير اللانهائي */
-        .feed {
+        /* حاوية التغذية الضخمة */
+        .master-feed {
             height: 100vh; overflow-y: scroll;
             snap-type: y mandatory; scroll-behavior: smooth;
         }
 
-        .video-card {
+        .video-section {
             height: 100vh; width: 100%; snap-align: start;
             position: relative; display: flex; align-items: center; justify-content: center;
         }
 
-        video { width: 100%; height: 100%; object-fit: cover; }
-
-        /* لوحة المعلومات الذكية */
-        .smart-info {
-            position: absolute; bottom: 50px; right: 50px;
-            background: var(--glass); backdrop-filter: blur(30px);
-            padding: 25px; border-radius: 20px; border: 1px solid var(--border);
-            z-index: 10; min-width: 250px;
+        /* عرض الفيديو السينمائي */
+        .video-container {
+            width: 100%; height: 100%;
+            background: #000; position: relative;
         }
 
-        .index-number {
-            font-size: 0.7rem; color: var(--accent);
-            letter-spacing: 3px; font-weight: bold;
+        video {
+            width: 100%; height: 100%; object-fit: cover;
+            opacity: 0; transition: opacity 1.2s ease-in-out;
         }
 
-        .video-name {
-            font-size: 1.3rem; font-weight: 200; margin-top: 5px;
-            text-transform: capitalize;
+        video.active { opacity: 1; }
+
+        /* الشعار والبيانات الفخمة (تصميم التايبوغراف الحديث) */
+        .overlay-ui {
+            position: absolute; bottom: 60px; right: 60px;
+            z-index: 10; text-align: right; pointer-events: none;
         }
 
-        /* لودر التحميل */
-        #loader {
+        .category-tag {
+            font-size: 0.65rem; font-weight: 900; letter-spacing: 5px;
+            color: var(--accent); text-transform: uppercase; margin-bottom: 10px;
+            opacity: 0.6;
+        }
+
+        .project-title {
+            font-size: clamp(2rem, 8vw, 4rem); font-weight: 100;
+            line-height: 1; letter-spacing: -2px;
+        }
+
+        /* لودر البداية الفخم */
+        #preloader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; display: flex; items-content: center;
-            justify-content: center; z-index: 1000; transition: 1s;
+            background: #000; z-index: 1000; display: flex;
+            align-items: center; justify-content: center; transition: 1.5s;
         }
 
-        .feed::-webkit-scrollbar { display: none; }
+        .loader-text { font-weight: 100; letter-spacing: 10px; font-size: 0.8rem; animation: pulse 2s infinite; }
+
+        @keyframes pulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+
+        .master-feed::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
 
-    <div id="loader">جاري استكشاف الفيديوهات في حسابك...</div>
+    <div id="preloader">
+        <div class="loader-text">STUDIO HOMEWORK / DISCOVERING ARCHIVE...</div>
+    </div>
 
-    <div class="feed" id="mainFeed"></div>
+    <div class="master-feed" id="mainFeed"></div>
 
     <script>
-        // إعدادات المحرك
-        const cloudName = "dssk5tabb";
-        const tagToSearch = "_ypq1wb"; // سيبحث عن أي فيديو يحتوي اسمه أو الوسم الخاص به على هذا النص
+        const CLOUD_NAME = "dssk5tabb";
+        const SUFFIX = "_ypq1wb";
+        const feed = document.getElementById('mainFeed');
 
-        async function startDiscovery() {
-            // ملاحظة: Cloudinary تتيح جلب قائمة بصيغة JSON للوسوم (Tags)
-            // ستحتاج لإضافة الوسم "_ypq1wb" للفيديوهات في لوحة التحكم
-            const apiUrl = `https://res.cloudinary.com/${cloudName}/video/list/${tagToSearch}.json`;
+        // أداة الفحص المتوازي لسرعة البرق
+        async function buildInfiniteLibrary() {
+            const maxVideos = 1000;
+            const probes = [];
 
-            try {
-                const response = await fetch(apiUrl);
-                if (!response.ok) throw new Error("تأكد من تفعيل Resource List في إعدادات الأمن");
-                
-                const data = await response.json();
-                const feed = document.getElementById('mainFeed');
-
-                // ترتيب الفيديوهات حسب تاريخ الرفع (الأحدث أولاً)
-                data.resources.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-
-                data.resources.forEach((res, index) => {
-                    const videoUrl = `https://res.cloudinary.com/${cloudName}/video/upload/f_auto,q_auto/${res.public_id}.${res.format}`;
-                    
-                    const card = document.createElement('div');
-                    card.className = 'video-card';
-                    card.innerHTML = `
-                        <video loop playsinline muted>
-                            <source src="${videoUrl}" type="video/mp4">
-                        </video>
-                        <div class="smart-info">
-                            <div class="index-number">فيديو رقم ${index + 1}</div>
-                            <div class="video-name">${res.public_id.replace(tagToSearch, '').replace(/_/g, ' ')}</div>
-                            <div style="font-size: 0.6rem; opacity: 0.5; margin-top: 10px;">
-                                تم الرفع: ${new Date(res.created_at).toLocaleDateString('ar-EG')}
-                            </div>
-                        </div>
-                    `;
-                    feed.appendChild(card);
-                });
-
-                document.getElementById('loader').style.opacity = '0';
-                setTimeout(() => document.getElementById('loader').remove(), 1000);
-                
-                initObserver();
-
-            } catch (error) {
-                document.getElementById('loader').innerHTML = "خطأ: تأكد من تفعيل ميزة (Resource List) في إعدادات Cloudinary";
-                console.error(error);
+            // إرسال طلبات فحص لجميع المسارات المحتملة في وقت واحد
+            for (let i = 1; i <= maxVideos; i++) {
+                probes.push(checkVideo(i));
             }
+
+            const activeVideos = await Promise.all(probes);
+            
+            activeVideos.filter(v => v !== null).forEach(video => {
+                createSection(video.url, video.index);
+            });
+
+            // إخفاء اللودر بعد اكتمال الفحص
+            document.getElementById('preloader').style.opacity = '0';
+            setTimeout(() => document.getElementById('preloader').remove(), 1500);
         }
 
-        function initObserver() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    const video = entry.target.querySelector('video');
-                    if (entry.isIntersecting) {
-                        video.play().catch(() => {});
-                    } else {
-                        video.pause();
-                    }
-                });
-            }, { threshold: 0.6 });
-
-            document.querySelectorAll('.video-card').forEach(card => observer.observe(card));
+        async function checkVideo(index) {
+            const id = `${index}${SUFFIX}`;
+            const url = `https://res.cloudinary.com/${CLOUD_NAME}/video/upload/f_auto,q_auto/${id}.mp4`;
+            
+            try {
+                const res = await fetch(url, { method: 'HEAD' });
+                if (res.ok) return { url, index };
+            } catch (e) {}
+            return null;
         }
 
-        // كتم/تشغيل الصوت
+        function createSection(url, index) {
+            const section = document.createElement('div');
+            section.className = 'video-section';
+            section.innerHTML = `
+                <div class="video-container">
+                    <video loop playsinline muted oncanplay="this.classList.add('active')">
+                        <source src="${url}" type="video/mp4">
+                    </video>
+                    <div class="overlay-ui">
+                        <div class="category-tag">DIGITAL ARCHIVE // NODE_${index}</div>
+                        <div class="project-title">Composition ${index < 10 ? '0' + index : index}</div>
+                    </div>
+                </div>
+            `;
+            feed.appendChild(section);
+            observer.observe(section);
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = entry.target.querySelector('video');
+                if (entry.isIntersecting) {
+                    video.play().catch(() => {});
+                } else {
+                    video.pause();
+                }
+            });
+        }, { threshold: 0.6 });
+
+        // تفعيل الصوت عند أول تفاعل
         document.addEventListener('click', () => {
             document.querySelectorAll('video').forEach(v => v.muted = false);
         }, { once: true });
 
-        window.onload = startDiscovery;
+        buildInfiniteLibrary();
     </script>
 </body>
 </html>
