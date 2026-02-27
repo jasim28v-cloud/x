@@ -3,245 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AETHER PINK | THE ULTIMATE CRYSTAL</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>v2rayx | Luxury Cinematic Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Plus+Jakarta+Sans:wght@200;800&display=swap');
-
         :root {
-            --pink-neon: #ff007f;
-            --glass-core: rgba(255, 0, 127, 0.03);
-            --border-glow: rgba(255, 0, 127, 0.3);
+            --neon-pink: #fe2c55;
+            --gold: #ffd700;
+            --glass-vibe: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(254, 44, 85, 0.3);
         }
 
-        body, html {
-            margin: 0; padding: 0;
-            background: #000;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #000;
+            font-family: 'Poppins', sans-serif;
             color: #fff;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            height: 100vh;
-            overflow: hidden;
+            overflow: hidden; /* Full-screen experience */
         }
 
-        /* Snap Engine */
-        .scroller {
-            height: 100vh;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
-            scrollbar-width: none;
-        }
-        .scroller::-webkit-scrollbar { display: none; }
-
-        .node-section {
-            height: 100vh;
-            width: 100%;
-            scroll-snap-align: start;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
+        /* Cinematic Film Grain Overlay */
+        .film-grain {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Grain.png');
+            opacity: 0.04; pointer-events: none; z-index: 5000;
         }
 
-        /* Video Treatment */
-        video {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-            filter: saturate(1.2) brightness(0.7);
-            transition: 1s;
+        /* Glass Header with Live Clock */
+        header {
+            position: fixed; top: 0; width: 100%; height: 90px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 40px; z-index: 2000;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(25px);
+            border-bottom: 1px solid var(--glass-border);
         }
 
-        /* Premium Luxury Frame */
-        .frame-glow {
-            position: absolute;
-            inset: 20px;
-            border: 1px solid var(--border-glow);
-            border-radius: 40px;
-            pointer-events: none;
-            box-shadow: inset 0 0 50px rgba(255, 0, 127, 0.1);
-            z-index: 10;
+        .logo-section { display: flex; flex-direction: column; }
+        .logo { font-size: 2.6rem; font-weight: 900; text-shadow: 0 0 20px var(--neon-pink); letter-spacing: -2px; }
+        #digital-clock { font-size: 1.1rem; color: var(--neon-pink); font-weight: 300; letter-spacing: 2px; }
+
+        /* Massive Video Feed System */
+        .video-feed { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; }
+        .video-box { position: relative; height: 100vh; width: 100%; scroll-snap-align: start; display: flex; justify-content: center; align-items: center; background: #000; }
+        
+        video { height: 100%; width: 100%; max-width: 480px; object-fit: cover; border-radius: 30px; border: 1px solid var(--glass-border); }
+
+        /* Trending Tag */
+        .trending-badge {
+            position: absolute; top: 110px; left: 20px;
+            background: linear-gradient(45deg, var(--neon-pink), #ff85a1);
+            padding: 6px 18px; border-radius: 25px; font-weight: 800; font-size: 0.75rem;
+            animation: glow-pulse 1.5s infinite; z-index: 1000;
         }
 
-        /* Glass Floating UI */
-        .luxury-info {
-            position: absolute;
-            bottom: 60px;
-            left: 45px;
-            z-index: 20;
-            padding: 30px;
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(40px);
-            border-radius: 35px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            max-width: 300px;
-        }
+        @keyframes glow-pulse { 0%, 100% { opacity: 0.7; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); box-shadow: 0 0 20px var(--neon-pink); } }
 
-        .side-icons {
-            position: absolute;
-            right: 40px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 35px;
-            z-index: 30;
+        /* Floating Live Comments System */
+        .comment-stream {
+            position: absolute; left: 20px; bottom: 180px; width: 260px;
+            height: 160px; overflow: hidden; pointer-events: none; z-index: 1000;
         }
-
-        .crystal-btn {
-            width: 60px;
-            height: 60px;
-            background: var(--glass-core);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--border-glow);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            color: #fff;
-            transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-            cursor: pointer;
+        .msg {
+            background: rgba(255,255,255,0.12); backdrop-filter: blur(8px);
+            padding: 6px 14px; border-radius: 18px; margin-bottom: 10px;
+            font-size: 0.85rem; border-left: 3px solid var(--neon-pink);
+            animation: slide-up 4s forwards; position: absolute; bottom: -50px;
         }
+        @keyframes slide-up { to { bottom: 250px; opacity: 0; } }
 
-        .crystal-btn:hover {
-            background: var(--pink-neon);
-            box-shadow: 0 0 30px var(--pink-neon);
-            transform: scale(1.1) rotate(5deg);
-        }
+        /* Interaction Sidebar with Real Share/Likes */
+        .sidebar { position: absolute; right: 20px; bottom: 130px; display: flex; flex-direction: column; gap: 28px; z-index: 1000; }
+        .btn-circle { width: 62px; height: 62px; background: var(--glass-vibe); border: 1px solid var(--glass-border); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(15px); font-size: 1.5rem; cursor: pointer; transition: 0.3s; position: relative; }
+        .btn-circle:hover { background: var(--neon-pink); border-color: #fff; box-shadow: 0 0 25px var(--neon-pink); }
+        .liked .btn-circle { background: var(--neon-pink); border-color: #fff; animation: pop 0.4s ease; }
+        @keyframes pop { 50% { transform: scale(1.3); } }
 
-        .syncopate { font-family: 'Syncopate', sans-serif; }
+        /* Heart Sparks Animation */
+        .sparkle { position: absolute; color: var(--neon-pink); pointer-events: none; animation: fly-away 0.8s forwards; }
+        @keyframes fly-away { to { transform: translateY(-120px) translateX(20px) scale(1.6); opacity: 0; } }
 
-        /* Navigation Bar */
-        .top-nav {
-            position: fixed;
-            top: 40px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            z-index: 100;
-        }
+        /* Info & Badges */
+        .video-info { position: absolute; bottom: 40px; left: 25px; z-index: 1000; }
+        .views-tag { background: rgba(254, 44, 85, 0.3); padding: 5px 15px; border-radius: 25px; font-size: 0.8rem; border: 1px solid var(--neon-pink); display: inline-block; margin-bottom: 12px; }
 
-        .search-capsule {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px 40px;
-            border-radius: 100px;
-            width: 320px;
-            text-align: center;
-            color: #fff;
-            font-size: 9px;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            outline: none;
-            transition: 0.5s;
-        }
+        /* Glowing Progress Line */
+        .progress-container { position: absolute; bottom: 0; width: 100%; height: 6px; background: rgba(255,255,255,0.1); }
+        .progress-bar { height: 100%; width: 0%; background: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
 
-        .search-capsule:focus {
-            width: 450px;
-            border-color: var(--pink-neon);
-            box-shadow: 0 0 40px rgba(255, 0, 127, 0.2);
-        }
-
-        /* Heart Bloom FX */
-        .heart-bloom {
-            position: absolute;
-            color: var(--pink-neon);
-            font-size: 120px;
-            pointer-events: none;
-            z-index: 100;
-            animation: bloom 1s forwards;
-        }
-
-        @keyframes bloom {
-            0% { transform: scale(0) rotate(-20deg); opacity: 0; }
-            50% { transform: scale(1.5) rotate(0deg); opacity: 0.8; }
-            100% { transform: scale(2.5) rotate(20deg); opacity: 0; }
-        }
+        ::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
 
-    <audio id="clickSfx" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+    <div class="film-grain"></div>
 
-    <div class="top-nav">
-        <input type="text" id="nodeSearch" placeholder="ACCESS ARCHIVE: 001-099" class="search-capsule syncopate font-bold">
-    </div>
-
-    <div id="mainScroller" class="scroller">
+    <header>
+        <div class="logo-section">
+            <div class="logo">v2rayx</div>
+            <div id="digital-clock">00:00:00</div>
         </div>
+        <div style="color: var(--gold); font-weight: 900; font-size: 0.75rem; letter-spacing: 3px; border: 1px solid var(--gold); padding: 5px 12px; border-radius: 10px;">ULTRA LUXURY</div>
+    </header>
+
+    <div class="video-feed" id="mainFeed"></div>
 
     <script>
-        const CLOUD = "dssk5tabb";
-        const TOTAL = 99;
-        const scroller = document.getElementById('mainScroller');
-        const sfx = document.getElementById('clickSfx');
+        // Update Live Clock
+        function updateClock() { document.getElementById('digital-clock').textContent = new Date().toLocaleTimeString(); }
+        setInterval(updateClock, 1000); updateClock();
 
-        function buildAether() {
-            let html = '';
-            for (let i = 1; i <= TOTAL; i++) {
-                let id = i.toString().padStart(3, '0');
-                let publicID = `${id}_ypq1wb`;
-                let videoUrl = `https://res.cloudinary.com/${CLOUD}/video/upload/${publicID}.mp4`;
+        const feed = document.getElementById('mainFeed');
+        const comments = ["Masterpiece! 💎", "v2rayx is stunning! 🔥", "That glass UI... wow ✨", "Ultra luxury vibe ❤️", "Best cinematic feed ever 🚀", "I love v2rayx! 🌸"];
 
-                html += `
-                <section class="node-section" id="v-${id}" ondblclick="bloomHeart(this)">
-                    <div class="frame-glow"></div>
-                    <video loop playsinline preload="none" onclick="this.paused ? this.play() : this.pause()">
-                        <source src="${videoUrl}" type="video/mp4">
-                    </video>
-
-                    <div class="side-icons">
-                        <div class="crystal-btn"><i class="fa-regular fa-heart"></i></div>
-                        <div class="crystal-btn"><i class="fa-solid fa-share-nodes"></i></div>
-                        <div class="crystal-btn" onclick="window.open('${videoUrl}')"><i class="fa-solid fa-arrow-down-long"></i></div>
-                    </div>
-
-                    <div class="luxury-info">
-                        <p class="syncopate text-[8px] tracking-[6px] text-pink-500 mb-2">AETHER NODE ACTIVE</p>
-                        <h2 class="syncopate text-xl font-bold italic tracking-tighter uppercase mb-2">CRYSTAL // ${id}</h2>
-                        <div class="h-[1px] w-12 bg-pink-500 opacity-50 mb-3"></div>
-                        <p class="text-[10px] text-white/30 font-light tracking-[2px]">${publicID}</p>
-                    </div>
-                </section>
-                `;
-            }
-            scroller.innerHTML = html;
+        // Real System Share
+        async function v2Share() {
+            try { await navigator.share({title: 'v2rayx', url: window.location.href}); } 
+            catch { navigator.clipboard.writeText(window.location.href); alert("Link Copied!"); }
         }
 
-        function bloomHeart(el) {
-            const h = document.createElement('i');
-            h.className = 'fas fa-heart heart-bloom';
-            h.style.left = '50%'; h.style.top = '50%';
-            h.style.transform = 'translate(-50%, -50%)';
-            el.appendChild(h);
-            setTimeout(() => h.remove(), 1000);
+        // Real Like Interaction
+        function handleLike(btn) {
+            btn.parentElement.classList.toggle('liked');
+            let count = btn.nextElementSibling;
+            let val = parseFloat(count.textContent);
+            count.textContent = btn.parentElement.classList.contains('liked') ? (val + 0.1).toFixed(1) + "K" : (val - 0.1).toFixed(1) + "K";
+            
+            for(let i=0; i<6; i++) {
+                const s = document.createElement('div');
+                s.className = 'sparkle'; s.textContent = '❤️';
+                s.style.left = (Math.random() * 40 - 20) + "px";
+                btn.appendChild(s);
+                setTimeout(() => s.remove(), 800);
+            }
         }
 
-        document.getElementById('nodeSearch').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const target = document.getElementById(`v-${e.target.value.padStart(3, '0')}`);
-                if (target) target.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
+        // Automatic 999 Video Generation Logic
+        for (let i = 1; i <= 999; i++) {
+            let num = i.toString().padStart(2, '0');
+            const videoId = `${num}_Itzbic`; // Matching your naming convention
+            const views = (Math.floor(Math.random() * 850) + 100) + "K";
+            const likes = (Math.floor(Math.random() * 120) + 20) + ".5K";
 
-        buildAether();
+            const item = document.createElement('div');
+            item.className = 'video-box';
+            item.innerHTML = `
+                <div class="trending-badge">🔥 VIRAL #${i}</div>
+                <video src="https://res.cloudinary.com/dssk5tabb/video/upload/q_auto,f_auto/${videoId}.mp4" loop playsinline></video>
+                <div class="comment-stream"></div>
+                <div class="sidebar">
+                    <div class="action-item"><div class="btn-circle" onclick="handleLike(this)">❤️</div><span style="font-size:0.8rem; margin-top:5px; text-align:center;">${likes}</span></div>
+                    <div class="action-item"><div class="btn-circle">💬</div><span style="font-size:0.8rem; margin-top:5px; text-align:center;">${Math.floor(Math.random()*800)}</span></div>
+                    <div class="action-item" onclick="v2Share()"><div class="btn-circle">🔗</div><span style="font-size:0.8rem; margin-top:5px; text-align:center;">Share</span></div>
+                </div>
+                <div class="video-info">
+                    <div class="views-tag">👁️ ${views} views</div>
+                    <h3 style="color:var(--neon-pink); font-size:1.7rem; font-weight:900;">@v2rayx_official</h3>
+                    <p style="opacity:0.8; font-size:0.9rem;">Exclusive Content: ${videoId}</p>
+                </div>
+                <div class="progress-container"><div class="progress-bar"></div></div>
+            `;
+            
+            const v = item.querySelector('video');
+            const fill = item.querySelector('.progress-bar');
 
-        const obs = new IntersectionObserver((entries) => {
+            // Floating Comments Injector
+            setInterval(() => {
+                if(item.dataset.active === "true") {
+                    const c = document.createElement('div');
+                    c.className = 'msg';
+                    c.textContent = comments[Math.floor(Math.random()*comments.length)];
+                    item.querySelector('.comment-stream').appendChild(c);
+                    setTimeout(() => c.remove(), 4000);
+                }
+            }, 2500);
+
+            v.ontimeupdate = () => { fill.style.width = (v.currentTime / v.duration) * 100 + "%"; };
+            item.onclick = (e) => { if(e.target.tagName !== 'DIV' && e.target.tagName !== 'SPAN') v.paused ? v.play() : v.pause(); };
+            feed.appendChild(item);
+        }
+
+        // Optimized Intersection Observer for Performance
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const v = entry.target.querySelector('video');
                 if (entry.isIntersecting) {
-                    v.play();
-                    sfx.currentTime = 0; sfx.play();
+                    v.play().catch(()=>{}); entry.target.dataset.active = "true";
                 } else {
-                    v.pause();
+                    v.pause(); v.currentTime = 0; entry.target.dataset.active = "false";
                 }
             });
-        }, { threshold: 0.8 });
-
-        document.querySelectorAll('.node-section').forEach(s => obs.observe(s));
+        }, { threshold: 0.7 });
+        document.querySelectorAll('.video-box').forEach(box => observer.observe(box));
     </script>
 </body>
 </html>
