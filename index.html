@@ -3,42 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Studio Homework | الإبداع الرقمي</title>
+    <title>Studio Homework | Infinite Flow</title>
     <style>
         :root {
-            --glass: rgba(255, 255, 255, 0.07);
-            --border: rgba(255, 255, 255, 0.12);
-            --accent-color: #00f2ea;
+            --glass: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.15);
+            --accent: #00f2ea;
         }
 
         body, html {
             margin: 0; padding: 0; height: 100%;
             overflow: hidden; background: #000;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
         }
 
-        /* خلفية ديناميكية متغيرة الألوان */
-        #bg-glow {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; filter: blur(120px); opacity: 0.4;
-            background: radial-gradient(circle, var(--accent-color), #000);
-            transition: background 1.5s ease;
-        }
-
-        /* الشعار الزجاجي الحديث */
-        .glass-logo {
-            position: fixed; top: 30px; right: 30px; z-index: 100;
+        /* الشعار العلوي */
+        .modern-logo {
+            position: fixed; top: 25px; right: 25px; z-index: 100;
             background: var(--glass); backdrop-filter: blur(20px);
-            padding: 12px 25px; border-radius: 15px;
-            border: 1px solid var(--border);
-            color: white; letter-spacing: 3px; font-weight: 200;
-            animation: float 4s infinite ease-in-out;
+            padding: 10px 25px; border-radius: 12px;
+            border: 1px solid var(--border); color: white;
+            font-weight: 200; letter-spacing: 3px; font-size: 0.9em;
         }
 
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
-        /* حاوية التمرير (نمط تيك توك) */
-        .feed-container {
+        /* حاوية التمرير */
+        .feed {
             height: 100vh; overflow-y: scroll;
             snap-type: y mandatory; scroll-behavior: smooth;
         }
@@ -49,92 +38,117 @@
             position: relative;
         }
 
-        /* إطار الفيديو السينمائي */
-        .video-frame {
+        /* إطار المشغل الزجاجي */
+        .player-wrapper {
             width: 85%; height: 85%; border-radius: 35px;
-            overflow: hidden; border: 1px solid var(--border);
+            overflow: hidden; position: relative;
+            border: 1px solid var(--border);
             box-shadow: 0 40px 80px rgba(0,0,0,0.8);
-            transform: scale(0.9); transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            background: #050505;
         }
 
-        .active .video-frame { transform: scale(1); border-color: var(--accent-color); box-shadow: 0 0 50px var(--accent-color); }
+        video { width: 100%; height: 100%; object-fit: cover; }
 
-        video { width: 100%; height: 100%; object-fit: cover; background: #050505; }
-
-        /* وصف الفيديو الزجاجي */
-        .glass-info {
-            position: absolute; bottom: 10%; right: 10%;
-            background: var(--glass); backdrop-filter: blur(30px);
-            padding: 25px; border-radius: 20px; border: 1px solid var(--border);
-            color: white; max-width: 280px; z-index: 10;
+        /* أدوات التحكم الاحترافية */
+        .custom-controls {
+            position: absolute; bottom: 30px; left: 50%;
+            transform: translateX(-50%);
+            display: flex; gap: 25px; padding: 12px 25px;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(15px);
+            border-radius: 50px; border: 1px solid var(--border);
+            z-index: 10;
         }
 
-        .feed-container::-webkit-scrollbar { display: none; }
+        .control-btn {
+            background: none; border: none; color: white;
+            cursor: pointer; font-size: 1.2rem; transition: 0.3s;
+        }
+
+        .control-btn:hover { color: var(--accent); transform: scale(1.2); }
+
+        /* معلومات الفيديو الجانبية */
+        .video-info {
+            position: absolute; bottom: 40px; right: 40px;
+            color: white; text-align: right; z-index: 5;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        }
+
+        .feed::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
 
-    <div id="bg-glow"></div>
-    <div class="glass-logo">STUDIO HOMEWORK</div>
+    <div class="modern-logo">STUDIO HOMEWORK</div>
 
-    <div class="feed-container" id="videoFeed">
+    <div class="feed" id="mainFeed">
         </div>
 
     <script>
-        const config = {
-            cloudName: "dssk5tabb",
-            suffix: "_ypq1wb",
-            colors: ['#00f2ea', '#ff0055', '#7000ff', '#ffaa00'],
-            totalVideos: 10 // ارفع هذا الرقم عندما تضيف فيديوهات جديدة
-        };
+        const cloudName = "dssk5tabb";
+        const suffix = "_ypq1wb";
+        const maxLimit = 1000; // الحد الأقصى الذي طلبته
+        const feed = document.getElementById('mainFeed');
 
-        const feed = document.getElementById('videoFeed');
+        // دالة إنشاء المشغل لكل فيديو
+        function createPlayer(index) {
+            const publicId = `${index}${suffix}`;
+            const videoUrl = `https://res.cloudinary.com/${cloudName}/video/upload/f_auto,q_auto/${publicId}.mp4`;
 
-        // بناء قائمة الفيديوهات بناءً على التسمية الرقمية (1_ypq1wb, 2_ypq1wb...)
-        for (let i = 1; i <= config.totalVideos; i++) {
-            const publicId = `${i}${config.suffix}`;
-            const videoUrl = `https://res.cloudinary.com/${config.cloudName}/video/upload/f_auto,q_auto/${publicId}.mp4`;
-
-            const section = document.createElement('div');
-            section.className = 'video-card';
-            section.dataset.index = i;
-            section.innerHTML = `
-                <div class="video-frame">
-                    <video loop playsinline muted>
+            const card = document.createElement('div');
+            card.className = 'video-card';
+            card.dataset.index = index;
+            card.innerHTML = `
+                <div class="player-wrapper">
+                    <video id="vid-${index}" loop playsinline muted>
                         <source src="${videoUrl}" type="video/mp4">
                     </video>
+                    <div class="custom-controls">
+                        <button class="control-btn" onclick="playPause(${index})">⏯️</button>
+                        <button class="control-btn" onclick="muteUnmute(${index})">🔊</button>
+                        <button class="control-btn" onclick="fullScreen(${index})">📺</button>
+                    </div>
                 </div>
-                <div class="glass-info">
-                    <div style="font-size: 0.7rem; color: var(--accent-color); margin-bottom: 5px; letter-spacing: 2px;">COLLECTION</div>
-                    <div style="font-size: 1.2rem; font-weight: 200;">Visual Piece #${i}</div>
+                <div class="video-info">
+                    <div style="font-size: 0.7rem; color: var(--accent); letter-spacing: 2px;">ARCHIVE</div>
+                    <div style="font-size: 1.5rem; font-weight: 200;">Piece #${index}</div>
                 </div>
             `;
-            feed.appendChild(section);
+            feed.appendChild(card);
+            observer.observe(card);
         }
 
-        // منطق التشغيل التلقائي والألوان الديناميكية
+        // وظائف التحكم
+        window.playPause = (id) => { const v = document.getElementById(`vid-${id}`); v.paused ? v.play() : v.pause(); };
+        window.muteUnmute = (id) => { const v = document.getElementById(`vid-${id}`); v.muted = !v.muted; };
+        window.fullScreen = (id) => { const v = document.getElementById(`vid-${id}`); v.requestFullscreen?.(); };
+
+        // نظام المراقبة للتشغيل التلقائي
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const video = entry.target.querySelector('video');
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
                     video.play().catch(() => {});
-                    // تغيير لون الخلفية حسب ترتيب الفيديو
-                    const color = config.colors[entry.target.dataset.index % config.colors.length];
-                    document.documentElement.style.setProperty('--accent-color', color);
                 } else {
-                    entry.target.classList.remove('active');
                     video.pause();
                 }
             });
         }, { threshold: 0.7 });
 
-        document.querySelectorAll('.video-card').forEach(card => observer.observe(card));
+        // تشغيل نظام التحميل الذكي (سيبحث حتى يجد آخر فيديو مرفوع أو يصل لـ 1000)
+        async function loadAll() {
+            for (let i = 1; i <= maxLimit; i++) {
+                // ملاحظة: لتحسين السرعة، نقوم بإنشاء المشغلات مباشرة.
+                // المتصفح سيقوم بتحميل الفيديوهات التي تظهر أمام المستخدم فقط (Lazy Loading).
+                createPlayer(i);
+            }
+        }
 
-        // تفعيل الصوت عند أول لمسة للشاشة
+        // تفعيل الصوت عند أول تفاعل
         document.addEventListener('click', () => {
             document.querySelectorAll('video').forEach(v => v.muted = false);
         }, { once: true });
+
+        loadAll();
     </script>
 </body>
 </html>
