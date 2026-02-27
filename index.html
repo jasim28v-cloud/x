@@ -2,98 +2,165 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>STUDIO HOMEWORK | ROYAL PINK</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Homework | Dynamic Masterpiece</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Rajdhani:wght@500;700&display=swap');
-        
-        :root { --jewel-pink: #ff007f; --glow: 0 0 20px rgba(255, 0, 127, 0.5); }
-        
-        body, html { margin: 0; padding: 0; background: #050002; color: #fff; overflow: hidden; font-family: 'Rajdhani', sans-serif; height: 100%; }
-
-        .scroller { height: 100vh; width: 100vw; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; }
-        .scroller::-webkit-scrollbar { display: none; }
-
-        .video-card { height: 100vh; width: 100vw; scroll-snap-align: start; position: relative; display: flex; align-items: center; justify-content: center; background: #000; }
-        
-        /* وضوح جوهري كامل للفيديو */
-        video { width: 100%; height: 100%; object-fit: contain; filter: contrast(1.1) brightness(0.9); }
-
-        .hud-frame { position: absolute; inset: 25px; border: 1px solid rgba(255, 0, 127, 0.1); pointer-events: none; z-index: 10; border-radius: 20px; }
-        .corner { position: absolute; width: 35px; height: 35px; border: 3px solid var(--jewel-pink); filter: drop-shadow(var(--glow)); }
-        .tl { top: -2px; left: -2px; border-right: 0; border-bottom: 0; border-radius: 15px 0 0 0; }
-        .br { bottom: -2px; right: -2px; border-left: 0; border-top: 0; border-radius: 0 0 15px 0; }
-
-        .title-pink { 
-            font-family: 'Orbitron'; font-weight: 900; font-size: clamp(3rem, 12vw, 6rem); line-height: 0.8; 
-            background: linear-gradient(to right, #fff, var(--jewel-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(var(--glow)); text-transform: uppercase;
+        :root {
+            --glass: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 255, 255, 0.12);
+            --dynamic-color: #00f2ea; /* اللون الافتراضي */
         }
 
-        #loader { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .load-bar { width: 200px; height: 2px; background: rgba(255,0,127,0.1); position: relative; margin-top: 20px; overflow: hidden; }
-        .load-progress { position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--jewel-pink); animation: loading 2s infinite; }
-        @keyframes loading { 100% { left: 100%; } }
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            overflow: hidden; background: #000;
+            font-family: 'Inter', system-ui, sans-serif;
+            transition: background 1.5s ease;
+        }
+
+        /* الخلفية الديناميكية المتغيرة */
+        #bg-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 20% 30%, var(--dynamic-color), transparent 40%),
+                        radial-gradient(circle at 80% 70%, #000, transparent 50%);
+            filter: blur(80px);
+            opacity: 0.4;
+            transition: all 1.5s ease;
+        }
+
+        /* الشعار الإبداعي */
+        .header {
+            position: fixed; top: 40px; right: 40px; z-index: 100;
+            text-align: right; border-right: 2px solid var(--dynamic-color);
+            padding-right: 20px; transition: border 1s ease;
+        }
+
+        .logo-main { font-size: 1.8rem; font-weight: 900; letter-spacing: 4px; color: white; }
+        .logo-sub { font-size: 0.7rem; opacity: 0.5; letter-spacing: 2px; color: white; }
+
+        /* حاوية الفيديوهات */
+        .feed {
+            height: 100vh; overflow-y: scroll;
+            snap-type: y mandatory; scroll-behavior: smooth;
+        }
+
+        .video-card {
+            height: 100vh; width: 100%; snap-align: start;
+            position: relative; display: flex; align-items: center; justify-content: center;
+        }
+
+        /* إطار الفيديو السينمائي */
+        .video-frame {
+            width: 80%; height: 80%; border-radius: 40px;
+            overflow: hidden; position: relative;
+            border: 1px solid var(--border);
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            transform: scale(0.95); transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .video-card.active .video-frame { transform: scale(1); box-shadow: 0 0 100px var(--dynamic-color); }
+
+        video { width: 100%; height: 100%; object-fit: cover; }
+
+        /* الوصف الزجاجي المتفاعل */
+        .glass-box {
+            position: absolute; bottom: 8%; left: 8%;
+            background: var(--glass); backdrop-filter: blur(30px);
+            border: 1px solid var(--border); border-radius: 25px;
+            padding: 30px; width: 280px; color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .nav-sidebar {
+            position: absolute; right: 40px; bottom: 8%;
+            display: flex; flex-direction: column; gap: 20px;
+        }
+
+        .nav-btn {
+            width: 60px; height: 60px; border-radius: 20px;
+            background: var(--glass); border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.3s; color: white; font-size: 20px;
+        }
+
+        .nav-btn:hover { background: white; color: black; transform: translateY(-5px); }
+
+        .feed::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="text-pink-500 font-black tracking-[12px] animate-pulse text-[10px]" style="font-family: 'Orbitron';">SYNCING_JEWEL_OS</div>
-        <div class="load-bar"><div class="load-progress"></div></div>
+    <div id="bg-canvas"></div>
+
+    <div class="header">
+        <div class="logo-main">STUDIO</div>
+        <div class="logo-sub">HOMEWORK / CREATIVE NODE</div>
     </div>
 
-    <main class="scroller" id="jewel-engine"></main>
+    <div class="feed" id="mainFeed"></div>
 
     <script>
-        const cloudAccount = "dssk5tabb";
-        
-        // الأسماء الصحيحة التي أرسلتها (كل اسم الآن فريد كما هو في حسابك)
-        const videoIDs = [
-            "22_ypq1wb", "23_ypq1wb", "24_ypq1wb", "25_ypq1wb", 
-            "26_ypq1wb", "27_ypq1wb", "28_ypq1wb", "29_ypq1wb", 
-            "30_ypq1wb", "31_ypq1wb", "32_ypq1wb", "33_ypq1wb", 
-            "34_ypq1wb", "35_ypq1wb", "36_ypq1wb", "37_ypq1wb"
-        ];
+        const cloudName = "dssk5tabb";
+        const tag = "_ypq1wb";
+        const colors = ['#ff0055', '#00f2ea', '#7000ff', '#ffaa00', '#00ff44']; // مصفوفة ألوان إبداعية
 
-        const engine = document.getElementById('jewel-engine');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = entry.target.querySelector('video');
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    video.play();
+                    // تغيير لون الموقع بناءً على ترتيب الفيديو
+                    const colorIndex = entry.target.dataset.index % colors.length;
+                    document.documentElement.style.setProperty('--dynamic-color', colors[colorIndex]);
+                } else {
+                    entry.target.classList.remove('active');
+                    video.pause();
+                }
+            });
+        }, { threshold: 0.7 });
 
-        videoIDs.forEach((id, index) => {
-            const section = document.createElement('section');
-            section.className = 'video-card';
-            section.innerHTML = `
-                <div class="hud-frame"><div class="corner tl"></div><div class="corner br"></div></div>
-                <video loop playsinline muted src="https://res.cloudinary.com/${cloudAccount}/video/upload/q_auto,f_auto/${id}.mp4"></video>
-                <div class="absolute bottom-16 right-10 z-[100] pointer-events-none">
-                    <div class="text-pink-400 text-[9px] tracking-[6px] mb-3 font-bold">NODE_REF: ${id}</div>
-                    <h2 class="title-pink">STUDIO<br>HOMEWORK</h2>
-                </div>
-            `;
-            engine.appendChild(section);
-        });
+        async function buildFeed() {
+            let i = 1;
+            while (i <= 20) {
+                const publicId = `${i}${tag}`;
+                const videoUrl = `https://res.cloudinary.com/${cloudName}/video/upload/f_auto,q_auto/${publicId}`;
 
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('loader').style.opacity = '0';
-                setTimeout(() => document.getElementById('loader').style.display = 'none', 800);
-            }, 1500);
-            initObserver();
-        });
+                try {
+                    const check = await fetch(videoUrl, { method: 'HEAD' });
+                    if (!check.ok) break;
 
-        function initObserver() {
-            const obs = new IntersectionObserver((entries) => {
-                entries.forEach(e => {
-                    const vid = e.target.querySelector('video');
-                    if (e.isIntersecting) vid.play().catch(() => {});
-                    else { vid.pause(); vid.currentTime = 0; }
-                });
-            }, { threshold: 0.6 });
-            document.querySelectorAll('.video-card').forEach(s => obs.observe(s));
+                    const section = document.createElement('div');
+                    section.className = 'video-card';
+                    section.dataset.index = i;
+                    section.innerHTML = `
+                        <div class="video-frame">
+                            <video loop playsinline muted>
+                                <source src="${videoUrl}" type="video/mp4">
+                            </video>
+                        </div>
+                        <div class="glass-box">
+                            <div style="font-size: 0.7rem; letter-spacing: 3px; margin-bottom: 10px; opacity: 0.6;">COLLECTION ITEM</div>
+                            <div style="font-size: 1.4rem; font-weight: 200;">Piece #${i}</div>
+                        </div>
+                        <div class="nav-sidebar">
+                            <div class="nav-btn">❤️</div>
+                            <div class="nav-btn" onclick="window.open('${videoUrl}', '_blank')">📥</div>
+                        </div>
+                    `;
+                    document.getElementById('mainFeed').appendChild(section);
+                    observer.observe(section);
+                    i++;
+                } catch (e) { break; }
+            }
         }
 
-        window.onclick = () => { document.querySelectorAll('video').forEach(v => v.muted = false); };
+        document.addEventListener('click', () => {
+            document.querySelectorAll('video').forEach(v => v.muted = false);
+        }, { once: true });
+
+        buildFeed();
     </script>
 </body>
 </html>
