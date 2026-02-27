@@ -3,40 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Studio Homework | المشرع الإبداعي</title>
+    <title>Studio Homework | الإبداع الرقمي</title>
     <style>
         :root {
-            --glass: rgba(255, 255, 255, 0.08);
-            --border: rgba(255, 255, 255, 0.15);
-            --dynamic-color: #00f2ea;
+            --glass: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 255, 255, 0.12);
+            --accent-color: #00f2ea;
         }
 
         body, html {
             margin: 0; padding: 0; height: 100%;
             overflow: hidden; background: #000;
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
         }
 
-        /* تأثير الخلفية المتغيرة */
-        #bg-canvas {
+        /* خلفية ديناميكية متغيرة الألوان */
+        #bg-glow {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; opacity: 0.3; filter: blur(100px);
-            background: radial-gradient(circle at center, var(--dynamic-color), #000);
-            transition: 1.5s ease;
+            z-index: -1; filter: blur(120px); opacity: 0.4;
+            background: radial-gradient(circle, var(--accent-color), #000);
+            transition: background 1.5s ease;
         }
 
-        /* الشعار الزجاجي */
-        .modern-logo {
+        /* الشعار الزجاجي الحديث */
+        .glass-logo {
             position: fixed; top: 30px; right: 30px; z-index: 100;
             background: var(--glass); backdrop-filter: blur(20px);
             padding: 12px 25px; border-radius: 15px;
             border: 1px solid var(--border);
             color: white; letter-spacing: 3px; font-weight: 200;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            animation: float 4s infinite ease-in-out;
         }
 
-        /* حاوية الفيديوهات (نمط تيك توك) */
-        .feed {
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        /* حاوية التمرير (نمط تيك توك) */
+        .feed-container {
             height: 100vh; overflow-y: scroll;
             snap-type: y mandatory; scroll-behavior: smooth;
         }
@@ -47,95 +49,92 @@
             position: relative;
         }
 
+        /* إطار الفيديو السينمائي */
         .video-frame {
             width: 85%; height: 85%; border-radius: 35px;
             overflow: hidden; border: 1px solid var(--border);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-            transform: scale(0.95); transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.8);
+            transform: scale(0.9); transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        .active .video-frame { transform: scale(1); border-color: var(--dynamic-color); }
+        .active .video-frame { transform: scale(1); border-color: var(--accent-color); box-shadow: 0 0 50px var(--accent-color); }
 
         video { width: 100%; height: 100%; object-fit: cover; background: #050505; }
 
-        /* الوصف الزجاجي السفلي */
-        .info-panel {
+        /* وصف الفيديو الزجاجي */
+        .glass-info {
             position: absolute; bottom: 10%; right: 10%;
             background: var(--glass); backdrop-filter: blur(30px);
             padding: 25px; border-radius: 20px; border: 1px solid var(--border);
-            color: white; max-width: 250px;
+            color: white; max-width: 280px; z-index: 10;
         }
 
-        .feed::-webkit-scrollbar { display: none; }
+        .feed-container::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
 
-    <div id="bg-canvas"></div>
-    <div class="modern-logo">STUDIO HOMEWORK</div>
+    <div id="bg-glow"></div>
+    <div class="glass-logo">STUDIO HOMEWORK</div>
 
-    <div class="feed" id="mainFeed">
+    <div class="feed-container" id="videoFeed">
         </div>
 
     <script>
         const config = {
             cloudName: "dssk5tabb",
-            tag: "_ypq1wb",
-            colors: ['#00f2ea', '#ff0055', '#7000ff', '#00ff44'],
-            total: 15 // غير هذا الرقم لعدد فيديوهاتك الحالية
+            suffix: "_ypq1wb",
+            colors: ['#00f2ea', '#ff0055', '#7000ff', '#ffaa00'],
+            totalVideos: 10 // ارفع هذا الرقم عندما تضيف فيديوهات جديدة
         };
 
-        function buildFeed() {
-            const container = document.getElementById('mainFeed');
-            for (let i = 1; i <= config.total; i++) {
-                const publicId = `${i}${config.tag}`;
-                const url = `https://res.cloudinary.com/${config.cloudName}/video/upload/f_auto,q_auto/${publicId}.mp4`;
+        const feed = document.getElementById('videoFeed');
 
-                const section = document.createElement('div');
-                section.className = 'video-card';
-                section.dataset.index = i;
-                section.innerHTML = `
-                    <div class="video-frame">
-                        <video loop playsinline muted>
-                            <source src="${url}" type="video/mp4">
-                        </video>
-                    </div>
-                    <div class="info-panel">
-                        <div style="font-size: 0.7rem; color: var(--dynamic-color); margin-bottom: 5px;">COLLECTION NODE</div>
-                        <div style="font-size: 1.1rem; font-weight: 300;">Visual Composition #${i}</div>
-                    </div>
-                `;
-                container.appendChild(section);
-            }
-            startObserver();
+        // بناء قائمة الفيديوهات بناءً على التسمية الرقمية (1_ypq1wb, 2_ypq1wb...)
+        for (let i = 1; i <= config.totalVideos; i++) {
+            const publicId = `${i}${config.suffix}`;
+            const videoUrl = `https://res.cloudinary.com/${config.cloudName}/video/upload/f_auto,q_auto/${publicId}.mp4`;
+
+            const section = document.createElement('div');
+            section.className = 'video-card';
+            section.dataset.index = i;
+            section.innerHTML = `
+                <div class="video-frame">
+                    <video loop playsinline muted>
+                        <source src="${videoUrl}" type="video/mp4">
+                    </video>
+                </div>
+                <div class="glass-info">
+                    <div style="font-size: 0.7rem; color: var(--accent-color); margin-bottom: 5px; letter-spacing: 2px;">COLLECTION</div>
+                    <div style="font-size: 1.2rem; font-weight: 200;">Visual Piece #${i}</div>
+                </div>
+            `;
+            feed.appendChild(section);
         }
 
-        function startObserver() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    const video = entry.target.querySelector('video');
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        video.play().catch(() => {});
-                        // تغيير اللون الديناميكي
-                        const color = config.colors[entry.target.dataset.index % config.colors.length];
-                        document.documentElement.style.setProperty('--dynamic-color', color);
-                    } else {
-                        entry.target.classList.remove('active');
-                        video.pause();
-                    }
-                });
-            }, { threshold: 0.7 });
+        // منطق التشغيل التلقائي والألوان الديناميكية
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = entry.target.querySelector('video');
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    video.play().catch(() => {});
+                    // تغيير لون الخلفية حسب ترتيب الفيديو
+                    const color = config.colors[entry.target.dataset.index % config.colors.length];
+                    document.documentElement.style.setProperty('--accent-color', color);
+                } else {
+                    entry.target.classList.remove('active');
+                    video.pause();
+                }
+            });
+        }, { threshold: 0.7 });
 
-            document.querySelectorAll('.video-card').forEach(card => observer.observe(card));
-        }
+        document.querySelectorAll('.video-card').forEach(card => observer.observe(card));
 
-        // تحرير الصوت عند أول لمسة للمستخدم
+        // تفعيل الصوت عند أول لمسة للشاشة
         document.addEventListener('click', () => {
             document.querySelectorAll('video').forEach(v => v.muted = false);
         }, { once: true });
-
-        buildFeed();
     </script>
 </body>
 </html>
