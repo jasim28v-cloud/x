@@ -3,30 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS REELS | TIKTOK STYLE</title>
+    <title>AETHER PINK | THE ULTIMATE CRYSTAL</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Plus+Jakarta+Sans:wght@300;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Plus+Jakarta+Sans:wght@200;800&display=swap');
+
+        :root {
+            --pink-neon: #ff007f;
+            --glass-core: rgba(255, 0, 127, 0.03);
+            --border-glow: rgba(255, 0, 127, 0.3);
+        }
 
         body, html {
             margin: 0; padding: 0;
             background: #000;
             color: #fff;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            height: 100%;
+            height: 100vh;
             overflow: hidden;
         }
 
-        /* Snap Scrolling Container */
-        .feed-container {
+        /* Snap Engine */
+        .scroller {
             height: 100vh;
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
+            scrollbar-width: none;
         }
+        .scroller::-webkit-scrollbar { display: none; }
 
-        .video-section {
+        .node-section {
             height: 100vh;
             width: 100%;
             scroll-snap-align: start;
@@ -34,165 +41,207 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #050505;
+            overflow: hidden;
         }
 
+        /* Video Treatment */
         video {
             height: 100%;
             width: 100%;
-            object-fit: cover; /* Vertical Full Screen like TikTok */
-            filter: brightness(0.9);
+            object-fit: cover;
+            filter: saturate(1.2) brightness(0.7);
+            transition: 1s;
         }
 
-        /* Glassmorphism Overlays */
-        .overlay-ui {
+        /* Premium Luxury Frame */
+        .frame-glow {
             position: absolute;
-            bottom: 40px;
-            left: 20px;
-            right: 80px;
+            inset: 20px;
+            border: 1px solid var(--border-glow);
+            border-radius: 40px;
+            pointer-events: none;
+            box-shadow: inset 0 0 50px rgba(255, 0, 127, 0.1);
             z-index: 10;
         }
 
-        .side-actions {
+        /* Glass Floating UI */
+        .luxury-info {
             position: absolute;
-            right: 15px;
-            bottom: 100px;
+            bottom: 60px;
+            left: 45px;
+            z-index: 20;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(40px);
+            border-radius: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 300px;
+        }
+
+        .side-icons {
+            position: absolute;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
             display: flex;
             flex-direction: column;
-            gap: 25px;
-            z-index: 10;
+            gap: 35px;
+            z-index: 30;
         }
 
-        .glass-btn {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+        .crystal-btn {
+            width: 60px;
+            height: 60px;
+            background: var(--glass-core);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
-            transition: 0.3s;
+            font-size: 22px;
+            color: #fff;
+            transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            cursor: pointer;
         }
 
-        .glass-btn:hover {
-            background: #3b82f6;
-            transform: scale(1.1);
+        .crystal-btn:hover {
+            background: var(--pink-neon);
+            box-shadow: 0 0 30px var(--pink-neon);
+            transform: scale(1.1) rotate(5deg);
         }
 
-        .orbitron { font-family: 'Orbitron', sans-serif; }
+        .syncopate { font-family: 'Syncopate', sans-serif; }
 
-        .video-info {
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(5px);
-            padding: 15px;
-            border-radius: 20px;
-            border-left: 3px solid #3b82f6;
-        }
-
-        /* Hide Scrollbar */
-        .feed-container::-webkit-scrollbar { display: none; }
-
-        .search-nav {
+        /* Navigation Bar */
+        .top-nav {
             position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 40px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
             z-index: 100;
-            width: 90%;
-            max-width: 400px;
+        }
+
+        .search-capsule {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px 40px;
+            border-radius: 100px;
+            width: 320px;
+            text-align: center;
+            color: #fff;
+            font-size: 9px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            outline: none;
+            transition: 0.5s;
+        }
+
+        .search-capsule:focus {
+            width: 450px;
+            border-color: var(--pink-neon);
+            box-shadow: 0 0 40px rgba(255, 0, 127, 0.2);
+        }
+
+        /* Heart Bloom FX */
+        .heart-bloom {
+            position: absolute;
+            color: var(--pink-neon);
+            font-size: 120px;
+            pointer-events: none;
+            z-index: 100;
+            animation: bloom 1s forwards;
+        }
+
+        @keyframes bloom {
+            0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+            50% { transform: scale(1.5) rotate(0deg); opacity: 0.8; }
+            100% { transform: scale(2.5) rotate(20deg); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <div class="search-nav">
-        <div class="relative">
-            <input type="text" id="idSearch" placeholder="JUMP TO #ID (001-099)..." 
-                   class="w-full bg-black/40 backdrop-blur-xl border border-white/10 rounded-full py-3 px-12 text-[10px] orbitron tracking-[0.2em] outline-none focus:border-blue-500 transition-all uppercase">
-            <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-gray-500"></i>
-        </div>
+    <audio id="clickSfx" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+
+    <div class="top-nav">
+        <input type="text" id="nodeSearch" placeholder="ACCESS ARCHIVE: 001-099" class="search-capsule syncopate font-bold">
     </div>
 
-    <div id="videoFeed" class="feed-container">
+    <div id="mainScroller" class="scroller">
         </div>
 
     <script>
-        const CLOUD_NAME = "dssk5tabb";
-        
-        // Generate IDs 001_ypq1wb to 099_ypq1wb
-        const createSequence = () => {
-            let data = [];
-            for (let i = 1; i <= 99; i++) {
-                let idNum = i.toString().padStart(3, '0');
-                data.push(`${idNum}_ypq1wb`);
-            }
-            return data;
-        };
+        const CLOUD = "dssk5tabb";
+        const TOTAL = 99;
+        const scroller = document.getElementById('mainScroller');
+        const sfx = document.getElementById('clickSfx');
 
-        const vaultData = createSequence();
-        const feed = document.getElementById('videoFeed');
-        const searchInput = document.getElementById('idSearch');
+        function buildAether() {
+            let html = '';
+            for (let i = 1; i <= TOTAL; i++) {
+                let id = i.toString().padStart(3, '0');
+                let publicID = `${id}_ypq1wb`;
+                let videoUrl = `https://res.cloudinary.com/${CLOUD}/video/upload/${publicID}.mp4`;
 
-        function renderFeed(items) {
-            feed.innerHTML = items.map(id => {
-                const stream = `https://res.cloudinary.com/${CLOUD_NAME}/video/upload/${id}.mp4`;
-                const poster = `https://res.cloudinary.com/${CLOUD_NAME}/video/upload/${id}.jpg`;
-                const idx = id.split('_')[0];
-
-                return `
-                <section class="video-section" id="section-${idx}">
-                    <video loop playsinline preload="none" poster="${poster}" onclick="this.paused ? this.play() : this.pause()">
-                        <source src="${stream}" type="video/mp4">
+                html += `
+                <section class="node-section" id="v-${id}" ondblclick="bloomHeart(this)">
+                    <div class="frame-glow"></div>
+                    <video loop playsinline preload="none" onclick="this.paused ? this.play() : this.pause()">
+                        <source src="${videoUrl}" type="video/mp4">
                     </video>
 
-                    <div class="side-actions">
-                        <div class="glass-btn"><i class="fas fa-heart text-white"></i></div>
-                        <div class="glass-btn"><i class="fas fa-comment-dots text-white"></i></div>
-                        <div class="glass-btn" onclick="window.open('${stream}')"><i class="fas fa-download text-white"></i></div>
-                        <div class="glass-btn"><i class="fas fa-share-alt text-white"></i></div>
+                    <div class="side-icons">
+                        <div class="crystal-btn"><i class="fa-regular fa-heart"></i></div>
+                        <div class="crystal-btn"><i class="fa-solid fa-share-nodes"></i></div>
+                        <div class="crystal-btn" onclick="window.open('${videoUrl}')"><i class="fa-solid fa-arrow-down-long"></i></div>
                     </div>
 
-                    <div class="overlay-ui">
-                        <div class="video-info">
-                            <h2 class="orbitron text-sm font-black mb-1 tracking-widest text-blue-400">NODE_ID: ${idx}</h2>
-                            <p class="text-[10px] text-gray-300 font-light tracking-wide italic">Filename: ${id}</p>
-                        </div>
+                    <div class="luxury-info">
+                        <p class="syncopate text-[8px] tracking-[6px] text-pink-500 mb-2">AETHER NODE ACTIVE</p>
+                        <h2 class="syncopate text-xl font-bold italic tracking-tighter uppercase mb-2">CRYSTAL // ${id}</h2>
+                        <div class="h-[1px] w-12 bg-pink-500 opacity-50 mb-3"></div>
+                        <p class="text-[10px] text-white/30 font-light tracking-[2px]">${publicID}</p>
                     </div>
                 </section>
                 `;
-            }).join('');
+            }
+            scroller.innerHTML = html;
         }
 
-        // Search to jump to video
-        searchInput.addEventListener('keypress', (e) => {
+        function bloomHeart(el) {
+            const h = document.createElement('i');
+            h.className = 'fas fa-heart heart-bloom';
+            h.style.left = '50%'; h.style.top = '50%';
+            h.style.transform = 'translate(-50%, -50%)';
+            el.appendChild(h);
+            setTimeout(() => h.remove(), 1000);
+        }
+
+        document.getElementById('nodeSearch').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                const val = e.target.value.padStart(3, '0');
-                const element = document.getElementById(`section-${val}`);
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                }
+                const target = document.getElementById(`v-${e.target.value.padStart(3, '0')}`);
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
             }
         });
 
-        renderFeed(vaultData);
+        buildAether();
 
-        // Auto-Play Logic (Plays video when it's in view)
-        const observerOptions = { threshold: 0.6 };
-        const observer = new IntersectionObserver((entries) => {
+        const obs = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                const video = entry.target.querySelector('video');
+                const v = entry.target.querySelector('video');
                 if (entry.isIntersecting) {
-                    video.play();
+                    v.play();
+                    sfx.currentTime = 0; sfx.play();
                 } else {
-                    video.pause();
+                    v.pause();
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.8 });
 
-        document.querySelectorAll('.video-section').forEach(section => observer.observe(section));
+        document.querySelectorAll('.node-section').forEach(s => obs.observe(s));
     </script>
 </body>
 </html>
