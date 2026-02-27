@@ -3,30 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Studio Homework | Infinite Flow</title>
+    <title>Studio Homework | Cinematic Luxury</title>
     <style>
         :root {
-            --glass: rgba(255, 255, 255, 0.08);
-            --border: rgba(255, 255, 255, 0.15);
-            --accent: #00f2ea;
+            /* ألوان فخمة وخفية */
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-hover: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.1);
+            --accent: #ffffff; /* أبيض نقي للفخامة */
         }
 
         body, html {
             margin: 0; padding: 0; height: 100%;
             overflow: hidden; background: #000;
             font-family: 'Inter', -apple-system, sans-serif;
+            color: white;
         }
 
-        /* الشعار العلوي */
-        .modern-logo {
-            position: fixed; top: 25px; right: 25px; z-index: 100;
-            background: var(--glass); backdrop-filter: blur(20px);
-            padding: 10px 25px; border-radius: 12px;
-            border: 1px solid var(--border); color: white;
-            font-weight: 200; letter-spacing: 3px; font-size: 0.9em;
-        }
-
-        /* حاوية التمرير */
+        /* حاوية التمرير (نمط تيك توك فخم) */
         .feed {
             height: 100vh; overflow-y: scroll;
             snap-type: y mandatory; scroll-behavior: smooth;
@@ -35,50 +29,85 @@
         .video-card {
             height: 100vh; width: 100%; snap-align: start;
             display: flex; align-items: center; justify-content: center;
-            position: relative;
+            position: relative; background: #000;
         }
 
-        /* إطار المشغل الزجاجي */
-        .player-wrapper {
-            width: 85%; height: 85%; border-radius: 35px;
-            overflow: hidden; position: relative;
-            border: 1px solid var(--border);
-            box-shadow: 0 40px 80px rgba(0,0,0,0.8);
-            background: #050505;
+        /* إطار الفيديو السينمائي */
+        .video-wrapper {
+            width: 100%; height: 100%; /* ملء الشاشة للفخامة */
+            position: relative; overflow: hidden;
         }
 
-        video { width: 100%; height: 100%; object-fit: cover; }
+        video {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
 
-        /* أدوات التحكم الاحترافية */
-        .custom-controls {
-            position: absolute; bottom: 30px; left: 50%;
-            transform: translateX(-50%);
-            display: flex; gap: 25px; padding: 12px 25px;
-            background: rgba(0,0,0,0.5); backdrop-filter: blur(15px);
-            border-radius: 50px; border: 1px solid var(--border);
-            z-index: 10;
+        /* --- المشغل الخفي (يظهر عند التمرير فوقه) --- */
+        .hidden-controls {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            height: 100px; /* مساحة التأثير */
+            background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+            display: flex; justify-content: center; align-items: center;
+            gap: 30px; opacity: 0; /* خفي تماماً */
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: translateY(20px); /* يبدأ من الأسفل قليلاً */
+            z-index: 20;
+        }
+
+        /* إظهار المشغل عند تمرير الماوس فوق أسفل الفيديو */
+        .video-wrapper:hover .hidden-controls {
+            opacity: 1; transform: translateY(0);
         }
 
         .control-btn {
-            background: none; border: none; color: white;
-            cursor: pointer; font-size: 1.2rem; transition: 0.3s;
+            background: var(--glass); border: 1px solid var(--border);
+            color: white; width: 50px; height: 50px;
+            border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; transition: 0.3s;
+            backdrop-filter: blur(10px);
         }
 
-        .control-btn:hover { color: var(--accent); transform: scale(1.2); }
+        .control-btn:hover {
+            background: var(--glass-hover); transform: scale(1.1);
+            border-color: var(--accent);
+        }
 
-        /* معلومات الفيديو الجانبية */
-        .video-info {
+        /* معلومات الفيديو الجانبية فخمة وخفية */
+        .video-meta {
             position: absolute; bottom: 40px; right: 40px;
-            color: white; text-align: right; z-index: 5;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            text-align: right; z-index: 10;
+            opacity: 0.7; transition: 0.5s;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
+
+        .video-wrapper:hover .video-meta { opacity: 1; }
+
+        .meta-tag {
+            font-size: 0.65rem; font-weight: 800; letter-spacing: 3px;
+            text-transform: uppercase; color: var(--accent);
+            margin-bottom: 5px; opacity: 0.8;
+        }
+
+        .meta-title { font-size: 1.8rem; font-weight: 200; letter-spacing: -1px; }
+
+        /* الشعار العلوي فخم وبسيط */
+        .luxury-logo {
+            position: fixed; top: 30px; left: 30px; z-index: 100;
+            font-weight: 900; font-size: 1rem; letter-spacing: 5px;
+            text-transform: uppercase; color: white; opacity: 0.3;
+            transition: 0.5s;
+        }
+
+        .luxury-logo:hover { opacity: 1; letter-spacing: 7px; }
 
         .feed::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="modern-logo">STUDIO HOMEWORK</div>
+    <div class="luxury-logo">STUDIO</div>
 
     <div class="feed" id="mainFeed">
         </div>
@@ -86,41 +115,42 @@
     <script>
         const cloudName = "dssk5tabb";
         const suffix = "_ypq1wb";
-        const maxLimit = 1000; // الحد الأقصى الذي طلبته
+        const maxLimit = 1000;
         const feed = document.getElementById('mainFeed');
 
-        // دالة إنشاء المشغل لكل فيديو
-        function createPlayer(index) {
+        // دالة إنشاء المشغل الفخم لكل فيديو
+        function createLuxuryPlayer(index) {
             const publicId = `${index}${suffix}`;
+            // الرابط المباشر بذكاء Cloudinary
             const videoUrl = `https://res.cloudinary.com/${cloudName}/video/upload/f_auto,q_auto/${publicId}.mp4`;
 
             const card = document.createElement('div');
             card.className = 'video-card';
             card.dataset.index = index;
             card.innerHTML = `
-                <div class="player-wrapper">
+                <div class="video-wrapper">
                     <video id="vid-${index}" loop playsinline muted>
                         <source src="${videoUrl}" type="video/mp4">
                     </video>
-                    <div class="custom-controls">
-                        <button class="control-btn" onclick="playPause(${index})">⏯️</button>
-                        <button class="control-btn" onclick="muteUnmute(${index})">🔊</button>
-                        <button class="control-btn" onclick="fullScreen(${index})">📺</button>
+                    <div class="hidden-controls">
+                        <button class="control-btn" onclick="pPause(${index})">⏯️</button>
+                        <button class="control-btn" onclick="mMute(${index})">🔊</button>
+                        <button class="control-btn" onclick="fScreen(${index})">📺</button>
                     </div>
-                </div>
-                <div class="video-info">
-                    <div style="font-size: 0.7rem; color: var(--accent); letter-spacing: 2px;">ARCHIVE</div>
-                    <div style="font-size: 1.5rem; font-weight: 200;">Piece #${index}</div>
+                    <div class="video-meta">
+                        <div class="meta-tag">ARCHIVE / NODE</div>
+                        <div class="meta-title">Piece #${index}</div>
+                    </div>
                 </div>
             `;
             feed.appendChild(card);
             observer.observe(card);
         }
 
-        // وظائف التحكم
-        window.playPause = (id) => { const v = document.getElementById(`vid-${id}`); v.paused ? v.play() : v.pause(); };
-        window.muteUnmute = (id) => { const v = document.getElementById(`vid-${id}`); v.muted = !v.muted; };
-        window.fullScreen = (id) => { const v = document.getElementById(`vid-${id}`); v.requestFullscreen?.(); };
+        // وظائف التحكم المحدثة
+        window.pPause = (id) => { const v = document.getElementById(`vid-${id}`); v.paused ? v.play() : v.pause(); };
+        window.mMute = (id) => { const v = document.getElementById(`vid-${id}`); v.muted = !v.muted; };
+        window.fScreen = (id) => { const v = document.getElementById(`vid-${id}`); v.requestFullscreen?.(); };
 
         // نظام المراقبة للتشغيل التلقائي
         const observer = new IntersectionObserver((entries) => {
@@ -128,18 +158,18 @@
                 const video = entry.target.querySelector('video');
                 if (entry.isIntersecting) {
                     video.play().catch(() => {});
+                    entry.target.querySelector('video').style.transform = "scale(1)";
                 } else {
                     video.pause();
+                    entry.target.querySelector('video').style.transform = "scale(1.1)"; // تأثير عمق بسيط عند الخروج
                 }
             });
-        }, { threshold: 0.7 });
+        }, { threshold: 0.6 });
 
-        // تشغيل نظام التحميل الذكي (سيبحث حتى يجد آخر فيديو مرفوع أو يصل لـ 1000)
-        async function loadAll() {
+        // تحميل كل الفيديوهات حتى 1000
+        async function loadArchive() {
             for (let i = 1; i <= maxLimit; i++) {
-                // ملاحظة: لتحسين السرعة، نقوم بإنشاء المشغلات مباشرة.
-                // المتصفح سيقوم بتحميل الفيديوهات التي تظهر أمام المستخدم فقط (Lazy Loading).
-                createPlayer(i);
+                createLuxuryPlayer(i);
             }
         }
 
@@ -148,7 +178,7 @@
             document.querySelectorAll('video').forEach(v => v.muted = false);
         }, { once: true });
 
-        loadAll();
+        loadArchive();
     </script>
 </body>
 </html>
