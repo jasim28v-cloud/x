@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -9,14 +9,15 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
 
-        :root { --neon: #00f3ff; --glass: rgba(0, 0, 0, 0.85); }
+        :root { --neon: #00f3ff; --shadow-dark: #050505; }
 
         body, html { 
-            margin: 0; padding: 0; background: #000; color: #fff; 
+            margin: 0; padding: 0; background: var(--shadow-dark); color: #fff; 
             overflow: hidden; font-family: 'Rajdhani', sans-serif;
             height: 100%; width: 100%;
         }
 
+        /* V99 SCROLL ENGINE */
         .main-scroller { 
             height: 100vh; width: 100vw;
             overflow-y: scroll; scroll-snap-type: y mandatory; 
@@ -29,61 +30,65 @@
             position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
         }
 
-        .video-bg { position: absolute; inset: 0; z-index: 1; }
-        video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.5) contrast(1.2); transition: 1.5s ease; }
-        .video-section:hover video { transform: scale(1.05); filter: brightness(0.7); }
+        /* BACKGROUND CORE */
+        .video-bg { position: absolute; inset: 0; z-index: 1; transition: transform 1.5s cubic-bezier(0.1, 0.7, 0.1, 1); }
+        video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.4) contrast(1.2); transition: 1s ease; }
+        .video-section:hover video { filter: brightness(0.6); transform: scale(1.05); }
 
+        /* HUD OVERLAY */
         .hud-overlay {
-            position: absolute; inset: 30px; border: 1px solid rgba(0, 243, 255, 0.1);
-            pointer-events: none; z-index: 10; border-radius: 25px;
+            position: absolute; inset: 25px; border: 1px solid rgba(0, 243, 255, 0.08);
+            pointer-events: none; z-index: 10; border-radius: 20px;
         }
-        .corner { position: absolute; width: 40px; height: 40px; border: 3px solid var(--neon); filter: drop-shadow(0 0 15px var(--neon)); }
-        .t-l { top: -2px; left: -2px; border-right: 0; border-bottom: 0; border-radius: 20px 0 0 0; }
-        .b-r { bottom: -2px; right: -2px; border-left: 0; border-top: 0; border-radius: 0 0 20px 0; }
+        .corner { position: absolute; width: 35px; height: 35px; border: 2px solid var(--neon); filter: drop-shadow(0 0 12px var(--neon)); opacity: 0.6; }
+        .t-l { top: -2px; left: -2px; border-right: 0; border-bottom: 0; border-top-left-radius: 15px; }
+        .b-r { bottom: -2px; right: -2px; border-left: 0; border-top: 0; border-bottom-right-radius: 15px; }
 
+        /* INFORMATION PANEL */
         .info-panel {
-            position: absolute; bottom: 80px; left: 50px; z-index: 100;
-            max-width: 85%; pointer-events: none;
+            position: absolute; bottom: 80px; left: 60px; z-index: 100;
+            text-align: left; pointer-events: none;
         }
         .node-tag {
-            background: rgba(0, 243, 255, 0.1); border: 1px solid var(--neon);
+            background: rgba(0, 243, 255, 0.1); border-left: 4px solid var(--neon);
             color: var(--neon); padding: 5px 15px; font-size: 10px;
-            letter-spacing: 5px; font-family: 'Orbitron'; margin-bottom: 25px; display: inline-block;
+            letter-spacing: 4px; font-family: 'Orbitron'; margin-bottom: 20px; display: inline-block;
         }
         .main-title {
-            font-family: 'Orbitron'; font-weight: 900; font-size: clamp(3rem, 12vw, 6.5rem);
-            line-height: 0.8; text-transform: uppercase; letter-spacing: -4px;
-            background: linear-gradient(to right, #fff, var(--neon));
+            font-family: 'Orbitron'; font-weight: 900; font-size: clamp(3rem, 12vw, 6rem);
+            line-height: 0.8; text-transform: uppercase; letter-spacing: -3px;
+            background: linear-gradient(to right, #ffffff, #444444);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
+        /* V99 LOADER */
         #loader {
             position: fixed; inset: 0; background: #000; z-index: 9999;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .progress-bar { width: 200px; height: 2px; background: rgba(255,255,255,0.1); position: relative; margin-top: 20px; }
-        .progress-fill { position: absolute; top: 0; left: 0; height: 100%; background: var(--neon); animation: sync 2.5s infinite; }
-
-        @keyframes sync { 0% { width: 0%; left: 0; } 50% { width: 100%; left: 0; } 100% { width: 0%; left: 100%; } }
+        .loading-text { font-family: 'Orbitron'; font-size: 11px; letter-spacing: 12px; color: var(--neon); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
     </style>
 </head>
 <body>
 
     <div id="loader">
-        <div class="text-cyan-400 font-black tracking-[12px] animate-pulse text-[10px]" style="font-family: 'Orbitron';">SYNCING_STUDIO_2027</div>
-        <div class="progress-bar"><div class="progress-fill"></div></div>
+        <div class="loading-text">SYNCING_SHADOW_CORE</div>
+        <div class="w-40 h-[1px] bg-white/10 mt-6 relative overflow-hidden">
+            <div class="absolute inset-0 bg-cyan-500 w-full animate-[loading_2s_ease-in-out_infinite]"></div>
+        </div>
     </div>
 
     <header class="fixed top-0 w-full z-[1000] p-10 flex justify-between items-start pointer-events-none">
         <div class="flex items-center gap-6">
-            <div class="w-1 h-16 bg-cyan-400 shadow-[0_0_20px_#00f3ff]"></div>
+            <div class="w-1 h-12 bg-cyan-400 shadow-[0_0_15px_#00f3ff]"></div>
             <div>
-                <h1 class="font-black text-3xl tracking-tighter" style="font-family: 'Orbitron';">STUDIO<span class="text-cyan-400">.HW</span></h1>
-                <div id="live-clock" class="text-[9px] text-white/40 tracking-[6px] mt-1">00:00:00 // SECURE_ACCESS</div>
+                <h1 class="font-black text-2xl tracking-tighter" style="font-family: 'Orbitron';">STUDIO<span class="text-cyan-400">.HW</span></h1>
+                <div id="live-clock" class="text-[9px] text-white/40 tracking-[5px] mt-1">00:00:00 // SYSTEM_READY</div>
             </div>
         </div>
         <div class="text-right">
-            <div class="px-4 py-1 border border-cyan-500/20 rounded bg-black/60 text-[9px] text-cyan-400 uppercase tracking-[4px]">Archive Mode 2027</div>
+            <div class="px-5 py-1.5 border border-cyan-500/30 rounded-sm bg-black/60 text-[9px] text-cyan-400 uppercase tracking-[4px]">V99 Protocol</div>
         </div>
     </header>
 
@@ -91,13 +96,11 @@
 
     <script>
         const cloudID = "dssk5tabb";
-        
-        // القائمة الجديدة حسب الترتيب المستخرج
+        // Optimized order based on your collection link
         const videoArchive = [
-            "22_ypq1wb", "23_ypq1wb", "24_ypq1wb", "25_ypq1wb",
-            "26_ypq1wb", "27_ypq1wb", "28_ypq1wb", "29_ypq1wb",
-            "30_ypq1wb", "31_ypq1wb", "32_ypq1wb", "33_ypq1wb",
-            "34_ypq1wb", "35_ypq1wb", "36_ypq1wb", "37_ypq1wb"
+            "20_xfje8w", "21_w4wece", "23_a80hnj", 
+            "24_biyybp", "25_hijmjm", "26_vdqhwz", 
+            "28_yra4wi", "29_ypq1wb"
         ];
 
         const engine = document.getElementById('content-engine');
@@ -108,36 +111,48 @@
             section.innerHTML = `
                 <div class="hud-overlay"><div class="corner t-l"></div><div class="corner b-r"></div></div>
                 <div class="video-bg">
-                    <video loop playsinline muted src="https://res.cloudinary.com/${cloudID}/video/upload/q_auto:best,f_auto/${id}.mp4"></video>
+                    <video loop playsinline muted preload="auto">
+                         <source src="https://res.cloudinary.com/${cloudID}/video/upload/q_auto,f_auto/${id}.mp4" type="video/mp4">
+                    </video>
                 </div>
                 <div class="info-panel">
-                    <div class="node-tag">NODE_ARCHIVE_${index + 1}</div>
-                    <h2 class="main-title">HOMEWORK<br>STUDIO</h2>
-                    <p class="text-white/20 text-[9px] mt-8 tracking-[8px] uppercase font-bold italic">Reference_ID: ${id}</p>
+                    <div class="node-tag">NODE_0${index + 1} // SECURE</div>
+                    <h2 class="main-title">SHADOW<br>ARCHIVE</h2>
+                    <p class="text-white/30 text-[9px] mt-8 tracking-[10px] uppercase font-bold">DATA_STREAM: ${id}</p>
                 </div>
             `;
             engine.appendChild(section);
         });
 
+        // SYSTEM INITIALIZATION
         window.addEventListener('load', () => {
             setTimeout(() => {
-                document.getElementById('loader').style.opacity = '0';
-                setTimeout(() => document.getElementById('loader').style.display = 'none', 1000);
-            }, 2000);
-            startObserver();
-        });
-
-        function startObserver() {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                setTimeout(() => loader.remove(), 1000);
+            }, 2500);
+            
             const obs = new IntersectionObserver((entries) => {
                 entries.forEach(e => {
                     const vid = e.target.querySelector('video');
-                    if (e.isIntersecting) vid.play();
-                    else { vid.pause(); vid.currentTime = 0; }
+                    if (e.isIntersecting) {
+                        vid.play();
+                        e.target.querySelector('.video-bg').style.transform = "scale(1)";
+                    } else {
+                        vid.pause();
+                        e.target.querySelector('.video-bg').style.transform = "scale(1.1)";
+                    }
                 });
-            }, { threshold: 0.7 });
+            }, { threshold: 0.6 });
             document.querySelectorAll('.video-section').forEach(s => obs.observe(s));
-        }
+        });
 
+        // AUDIO UNLOCK PROTOCOL
+        window.onclick = () => { 
+            document.querySelectorAll('video').forEach(v => v.muted = false);
+        };
+
+        // REAL-TIME SYSTEM CLOCK
         setInterval(() => {
             const now = new Date();
             document.getElementById('live-clock').innerText = 
@@ -145,8 +160,6 @@
                 now.getMinutes().toString().padStart(2, '0') + ":" + 
                 now.getSeconds().toString().padStart(2, '0') + " // SYSTEM_ACTIVE";
         }, 1000);
-
-        window.onclick = () => { document.querySelectorAll('video').forEach(v => v.muted = false); };
     </script>
 </body>
 </html>
