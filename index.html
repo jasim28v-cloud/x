@@ -3,180 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRYSTAL VAULT | ULTRA LUXURY</title>
+    <title>NEXUS VAULT | CLOUD STORAGE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Plus+Jakarta+Sans:wght@200;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Plus+Jakarta+Sans:wght@300;700&display=swap');
 
         :root {
-            --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
-            --accent: #3b82f6;
+            --glass-bg: rgba(255, 255, 255, 0.01);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --accent-blue: #3b82f6;
         }
 
         body {
-            background: #02040a;
-            color: #fff;
+            background: #030509;
+            color: #ffffff;
             font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
             overflow-x: hidden;
-            min-height: 200vh;
         }
 
-        /* خلفية متحركة خارقة */
-        .bg-glow {
+        .mesh-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% -20%, #1e293b, #02040a);
+            background: radial-gradient(circle at 10% 10%, #1e293b 0%, transparent 35%),
+                        radial-gradient(circle at 90% 90%, #0f172a 0%, transparent 35%);
             z-index: -1;
         }
 
-        .blob {
-            position: fixed;
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
-            filter: blur(80px);
-            border-radius: 50%;
-            z-index: -1;
-            animation: move 20s infinite alternate;
+        .glass-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px) saturate(150%);
+            border: 1px solid var(--glass-border);
+            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
-        @keyframes move {
-            from { transform: translate(-20%, -20%); }
-            to { transform: translate(20%, 20%); }
-        }
-
-        /* تصميم الكارت الزجاجي */
-        .glass-card {
-            background: var(--glass);
-            backdrop-filter: blur(25px) saturate(180%);
-            border: 1px solid var(--border);
-            border-radius: 32px;
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .glass-card:hover {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: rgba(59, 130, 246, 0.4);
-            transform: translateY(-15px) scale(1.02);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 20px rgba(59, 130, 246, 0.1);
+        .glass-container:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--accent-blue);
+            transform: translateY(-8px);
         }
 
         .orbitron { font-family: 'Orbitron', sans-serif; }
-
-        .search-container {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border);
-            backdrop-filter: blur(15px);
-            border-radius: 24px;
-        }
 
         video {
             width: 100%;
             aspect-ratio: 16/9;
             object-fit: cover;
-            border-radius: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-radius: 20px 20px 0 0;
+            background: #000;
         }
 
-        .neon-text {
-            text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        .search-field {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            transition: 0.4s;
         }
 
-        ::-webkit-scrollbar { width: 4px; }
+        .search-field:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+            outline: none;
+        }
+
+        ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="bg-glow"></div>
-    <div class="blob"></div>
+    <div class="mesh-bg"></div>
 
-    <nav class="container mx-auto px-6 py-10 flex flex-col items-center">
-        <div class="flex items-center gap-4 mb-12">
-            <div class="w-16 h-16 glass-card flex items-center justify-center text-blue-500 shadow-2xl">
-                <i class="fa-solid fa-gem text-2xl animate-pulse"></i>
-            </div>
-            <div class="text-left">
-                <h1 class="orbitron text-3xl font-black tracking-[0.3em] uppercase neon-text">Crystal<span class="text-blue-500">Node</span></h1>
-                <p class="text-[10px] text-gray-500 tracking-[0.5em] uppercase font-bold mt-1">Quantum Cloud Interface</p>
-            </div>
+    <header class="container mx-auto px-6 py-16 flex flex-col items-center">
+        <div class="text-center mb-12">
+            <h1 class="orbitron text-4xl md:text-5xl font-black tracking-[0.5em] text-blue-500 mb-3">VAULT<span class="text-white">NODE</span></h1>
+            <p class="text-[10px] orbitron tracking-[1em] text-gray-600 uppercase">Cloud Repository: dssk5tabb</p>
         </div>
 
-        <div class="search-container w-full max-w-2xl flex items-center px-8 py-5 group">
-            <i class="fa-solid fa-fingerprint text-blue-500/50 mr-6 text-xl"></i>
-            <input type="text" id="vaultSearch" placeholder="IDENTIFY INDEX (001-099)..." 
-                   class="bg-transparent w-full outline-none text-sm orbitron tracking-widest font-bold placeholder:text-gray-700">
-            <span class="text-[9px] text-gray-600 orbitron">SECURE_LINK</span>
+        <div class="relative w-full max-w-2xl">
+            <i class="fas fa-barcode absolute left-6 top-1/2 -translate-y-1/2 text-blue-500"></i>
+            <input type="text" id="searchInput" placeholder="SCAN INDEX (001-099)..." 
+                   class="search-field w-full py-5 pl-16 pr-8 text-xs orbitron tracking-widest uppercase">
         </div>
-    </nav>
+    </header>
 
-    <main class="container mx-auto px-8 py-20">
-        <div id="crystalGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+    <main class="container mx-auto px-6 pb-40">
+        <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
             </div>
     </main>
 
-    <footer class="py-20 text-center opacity-30">
-        <p class="orbitron text-[9px] tracking-[1em] uppercase">End of Encrypted Archive</p>
-    </footer>
-
     <script>
         const CLOUD_NAME = "dssk5tabb";
-
-        // Generate names automatically 001_ypq1wb to 099_ypq1wb
-        const generateData = () => {
-            let list = [];
+        
+        const initSequence = () => {
+            let data = [];
             for (let i = 1; i <= 99; i++) {
-                let num = i.toString().padStart(3, '0');
-                list.push({
-                    id: `${num}_ypq1wb`,
-                    index: num
-                });
+                let id = i.toString().padStart(3, '0');
+                data.push(`${id}_ypq1wb`);
             }
-            return list;
+            return data;
         };
 
-        const vaultItems = generateData();
-        const grid = document.getElementById('crystalGrid');
-        const searchInput = document.getElementById('vaultSearch');
+        const vaultData = initSequence();
+        const grid = document.getElementById('galleryGrid');
+        const search = document.getElementById('searchInput');
 
-        function render(data) {
-            grid.innerHTML = data.map(item => `
-                <div class="glass-card p-4 group">
-                    <div class="relative mb-6 overflow-hidden rounded-3xl">
-                        <video poster="https://res.cloudinary.com/${CLOUD_NAME}/video/upload/${item.id}.jpg" preload="none" controls>
-                            <source src="https://res.cloudinary.com/${CLOUD_NAME}/video/upload/${item.id}.mp4" type="video/mp4">
+        function render(items) {
+            grid.innerHTML = items.map(id => {
+                const streamUrl = `https://res.cloudinary.com/${CLOUD_NAME}/video/upload/${id}.mp4`;
+                const thumbUrl = `https://res.cloudinary.com/${CLOUD_NAME}/video/upload/${id}.jpg`;
+                const tag = id.split('_')[0];
+
+                return `
+                <div class="glass-container rounded-[30px] overflow-hidden">
+                    <div class="relative">
+                        <video poster="${thumbUrl}" preload="none" controls>
+                            <source src="${streamUrl}" type="video/mp4">
                         </video>
-                        <div class="absolute top-4 left-4 glass-card px-4 py-2 border-none">
-                            <span class="orbitron text-[10px] font-black text-blue-400">#${item.index}</span>
+                        <div class="absolute top-4 left-4 glass-container border-none px-3 py-1 rounded-lg">
+                            <span class="text-[9px] font-black orbitron text-blue-400 tracking-widest">IDX-${tag}</span>
                         </div>
                     </div>
-                    <div class="px-4 pb-4">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="orbitron text-[11px] font-bold text-gray-400 tracking-tighter">${item.id}</h3>
-                            <div class="flex gap-1">
-                                <span class="w-1 h-1 rounded-full bg-blue-600 animate-ping"></span>
-                                <span class="w-1 h-1 rounded-full bg-blue-600/30"></span>
-                            </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-5">
+                            <h3 class="text-[10px] orbitron text-gray-500 tracking-tighter truncate">${id}</h3>
+                            <div class="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]"></div>
                         </div>
-                        <button onclick="window.open('https://res.cloudinary.com/${CLOUD_NAME}/video/upload/${item.id}.mp4')" 
-                                class="w-full py-3 glass-card text-[9px] orbitron font-bold uppercase tracking-widest hover:bg-blue-600 hover:text-white border-white/5 transition-all">
-                            Access Source Link
-                        </button>
+                        <a href="${streamUrl}" target="_blank" class="block w-full text-center py-3 glass-container border-white/5 text-[9px] orbitron font-black uppercase tracking-widest hover:bg-blue-600 transition-all">
+                            Direct Source
+                        </a>
                     </div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
-        // Real-time Filtering
-        searchInput.addEventListener('input', (e) => {
+        search.addEventListener('input', (e) => {
             const val = e.target.value.toLowerCase();
-            const filtered = vaultItems.filter(item => item.id.includes(val));
+            const filtered = vaultData.filter(id => id.includes(val));
             render(filtered);
         });
 
-        // Initialize
-        render(vaultItems);
+        render(vaultData);
     </script>
 </body>
 </html>
